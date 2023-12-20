@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-rentalsv3-dev-182117-authRole",
+      "UnauthRoleArn": "arn:aws:iam::829598437531:role/amplify-rentalsv3-dev-182117-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::829598437531:role/amplify-rentalsv3-dev-182117-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-rentalsv3-dev-182117-deployment",
+      "UnauthRoleName": "amplify-rentalsv3-dev-182117-unauthRole",
+      "StackName": "amplify-rentalsv3-dev-182117",
+      "StackId": "arn:aws:cloudformation:us-east-2:829598437531:stack/amplify-rentalsv3-dev-182117/7afbd180-9f8e-11ee-9fa0-06b6f9c515fb",
+      "AmplifyAppId": "d2r3pr7midiand"
+    },
+    "categories": {
+      "function": {
+        "rentalsV3": {
+          "deploymentBucketName": "amplify-rentalsv3-dev-182117-deployment",
+          "s3Key": "amplify-builds/rentalsV3-716838652b3353426c4c-build.zip"
+        }
+      },
+      "api": {
+        "rentalsV3": {}
+      }
+    }
+  }
+}

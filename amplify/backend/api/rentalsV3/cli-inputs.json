@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/rentalInfo": {
+      "name": "/rentalInfo",
+      "lambdaFunction": "rentalsV3",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

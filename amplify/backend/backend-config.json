@@ -1,0 +1,43 @@
+{
+  "api": {
+    "rentalsV3": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "rentalsV3"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "rentalsV3": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_rentalsV3_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "rentalsV3"
+        }
+      ]
+    },
+    "AMPLIFY_function_rentalsV3_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "rentalsV3"
+        }
+      ]
+    }
+  }
+}
