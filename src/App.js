@@ -3,7 +3,7 @@ import './styles.css';
 import MapComponent from './mapComponent';
 import sampleResponse from './sampleResponse'; // Import your sample response
 
-// const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo'; // Comment out if not using the live API
+const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo'; // Comment out if not using the live API
 
 function App() {
   const [radius, setRadius] = useState(0.1); // Initial radius value
@@ -52,28 +52,20 @@ function App() {
     setLoading(true);
 
     try {
-    // Comment out the actual API call
-    // const response = await fetch(`${API_ENDPOINT}/rentalInfo?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}`, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
+    const response = await fetch(`${API_ENDPOINT}/rentalInfo?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-    // if (!response.ok) {
-    //   throw new Error(`Failed to fetch rental prices: ${response.statusText}`);
-    // }
+    if (!response.ok) {
+      throw new Error(`Failed to fetch rental prices: ${response.statusText}`);
+    }
 
-    // const data = await response.json();
-
-    // Use the sample response instead
-      console.log("Using sampleResponse:", sampleResponse);
-
-      setAveragePrices(sampleResponse.averagePrices);
-      setListings(sampleResponse.listings);
-
-      console.log("averagePrices state set to:", sampleResponse.averagePrices);
-      console.log("listings state set to:", sampleResponse.listings);
+    const data = await response.json();
+      setAveragePrices(data.averagePrices);
+      setListings(data.listings);
     } catch (error) {
       console.error(`Error: ${error}`);
       setError(error.message);
