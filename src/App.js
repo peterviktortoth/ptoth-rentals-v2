@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import MapComponent from './mapComponent';
+import sampleResponse from './sampleResponse'; // Import your sample response
 
-const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo';
+// const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo'; // Comment out if not using the live API
 
 function App() {
   const [radius, setRadius] = useState(0.1); // Initial radius value
@@ -37,6 +38,8 @@ function App() {
   }, []);
 
   const calculateRentalPrices = async () => {
+    console.log("calculateRentalPrices called");
+
     if (isNaN(radius) || radius <= 0) {
       setError('Please enter a valid positive number for the radius.');
       setAveragePrices([]);
@@ -49,20 +52,28 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_ENDPOINT}/rentalInfo?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    // Comment out the actual API call
+    // const response = await fetch(`${API_ENDPOINT}/rentalInfo?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}`, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch rental prices: ${response.statusText}`);
-      }
+    // if (!response.ok) {
+    //   throw new Error(`Failed to fetch rental prices: ${response.statusText}`);
+    // }
 
-      const data = await response.json();
-      setAveragePrices(data.averagePrices);
-      setListings(data.listings);
+    // const data = await response.json();
+
+    // Use the sample response instead
+      console.log("Using sampleResponse:", sampleResponse);
+
+      setAveragePrices(sampleResponse.averagePrices);
+      setListings(sampleResponse.listings);
+
+      console.log("averagePrices state set to:", sampleResponse.averagePrices);
+      console.log("listings state set to:", sampleResponse.listings);
     } catch (error) {
       console.error(`Error: ${error}`);
       setError(error.message);
@@ -72,18 +83,31 @@ function App() {
   };
 
   const toggleSection = (bedrooms) => {
-    setExpandedSections(prevState => ({
-      ...prevState,
-      [bedrooms]: !prevState[bedrooms]
-    }));
+    setExpandedSections(prevState => {
+      const newState = {
+        ...prevState,
+        [bedrooms]: !prevState[bedrooms]
+      };
+
+      console.log("Expanded sections updated to:", newState);
+      return newState;
+    });
   };
 
   const handleIncrement = () => {
-    setRadius(prevRadius => Math.min(prevRadius + 0.1, 5)); // Increment, max 5
+    setRadius(prevRadius => {
+      const newRadius = Math.min(prevRadius + 0.1, 5);
+      console.log("Radius incremented to:", newRadius);
+      return newRadius;
+    });
   };
 
   const handleDecrement = () => {
-    setRadius(prevRadius => Math.max(prevRadius - 0.1, 0.1)); // Decrement, min 0.1
+    setRadius(prevRadius => {
+      const newRadius = Math.max(prevRadius - 0.1, 0.1);
+      console.log("Radius decremented to:", newRadius);
+      return newRadius;
+    });
   };
 
   return (
@@ -110,20 +134,20 @@ function App() {
         <div>
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
-            {averagePrices.map((item, index) => (
+            {averagePrices && averagePrices.map((item, index) => (
               <li key={index} className="result-item">
                 <div className="category-title" onClick={() => toggleSection(item.bedrooms)}>
                   Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`} rental - ${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
                 </div>
-                {expandedSections[item.bedrooms] && (
-                  <ul className="listings-list">
-                    {listings.filter(listing => listing.bedrooms === item.bedrooms).map((listing, listingIndex) => (
-                      <li key={listingIndex} className="listing-item">
-                        {listing.propertyType} - {listing.formattedAddress} - ${listing.price.toLocaleString('en-US')}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                {expandedSections[item.bedrooms] && listings && listings.filter(listing => {
+                  const listingBedrooms = String(listing.bedrooms);
+                  const itemBedrooms = String(item.bedrooms);
+                  return listingBedrooms === itemBedrooms;
+                }).map((listing, listingIndex) => (
+                  <li key={listingIndex} className="listing-item">
+                    {listing.propertyType} - {listing.formattedAddress} - ${listing.price.toLocaleString('en-US')}
+                  </li>
+                ))}
               </li>
             ))}
           </ul>

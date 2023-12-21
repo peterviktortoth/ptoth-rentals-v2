@@ -3,7 +3,7 @@
 .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
   }
   
   .title {
@@ -14,7 +14,7 @@
   .instructions {
     text-align: center;
     color: #000000; /* Adjust color as needed */
-    margin-bottom: 10px; /* Space below the text */
+    margin-bottom: 0px; /* Space below the text */
     font-size: 16px; /* Adjust font size as needed */
   }
   
@@ -36,16 +36,6 @@
     box-sizing: border-box;
   }
   
-  .form-button {
-    padding: 12px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-  }
   
   .error-message {
     color: red;
@@ -54,7 +44,9 @@
   
   .results-list {
     list-style-type: none;
-    padding: 0px;
+    padding: 5px;
+    background-color: #ffffff00;
+    border-radius: 5px;
     justify-content: center;
   }
   
@@ -62,7 +54,7 @@
     margin-bottom: 10px;
     background-color: #000000;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 45px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-size: 14px;
     justify-content: center;
@@ -71,7 +63,8 @@
   }
   
   .result-item:hover {
-    background-color: #050505;
+    background-color: #ffffff;
+    color:#000000
   }
   
   
@@ -174,7 +167,7 @@
   
   /* Main Container */
   .container {
-    max-width: 600px;
+    max-width: flex;
     margin: 5px auto; /* Center and add space around the main container */
     padding: 20px;
     background-color: #bcd5ee;
@@ -197,11 +190,10 @@
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
-    margin-top: 0px; /* Space above the button */
+    margin-top: 20px; /* Space above the button */
     border-radius: 45px; /* Rounded corners */
   }
   /* Other styles remain unchanged */
-  
   
 
 .spinner-container {
@@ -236,11 +228,7 @@
     }
   }
   
-  *{
-    margin : 0;
-    padding : 0;
-  
-}
+
 
 
   
