@@ -1,0 +1,7 @@
+/* leaflet-styles.css */
+
+/* Customize map container */
+.leaflet-container {
+  background-color: red !important;
+}
+  
