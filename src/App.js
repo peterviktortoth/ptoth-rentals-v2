@@ -49,7 +49,7 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_ENDPOINT}?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}`, {
+      const response = await fetch(`${API_ENDPOINT}/rentalInfo?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
