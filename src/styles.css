@@ -42,34 +42,82 @@
     margin-top: 10px;
   }
   
-  .results-list {
-    list-style-type: none;
-    padding: 5px;
-    background-color: #ffffff00;
-    border-radius: 5px;
-    justify-content: center;
-  }
-  
-  .result-item {
-    margin-bottom: 10px;
-    background-color: #000000;
-    padding: 5px;
-    border-radius: 45px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-size: 14px;
-    justify-content: center;
-    text-align: center;
-    color: white;
-  }
-  
-  .result-item:hover {
-    background-color: #ffffff;
-    color:#000000
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+/* Updated Results List */
+.results-list {
+  list-style-type: none;
+  padding: 5px;
+  background-color: #ffffff00; /* Consider adjusting */
+  border-radius: 0px;
+  justify-content: center;
+  max-width: 420px; /* From template's .accordion */
+}
+
+/* Updated Result Item */
+.result-item {
+  margin-bottom: 10px;
+  background-color: #424040a4; /* Adjusted */
+  padding: 5px;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  border: 0px solid #fff; /* From template's article */
+}
+
+.result-item:hover {
+  background-color: #6cb0f3;
+  color: #000000;
+  border: 2px solid #ffffff;
+}
+
+/* Accordion and Nested List Styles */
+.toggle {
+  appearance: none;
+  position: absolute;
+  opacity: 0;
+}
+
+.toggle ~ .listing-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+
+.toggle:checked ~ .listing-container {
+  max-height: 1000px; /* Adjust as needed */
+}
+
+.listing-container {
+  padding: 0 0em; /* Style as needed */
+}
+
+.category-title {
+  color: #ffffff; /* Example: orange color */
+  font-weight: bolder;
+}
+
+
+.listing-item {
+  background-color: #40404000; /* Adjusted */
+  padding: 0.5em;
+  margin: 0.5em 0;
+  border-left: 0px solid #fff; /* Distinguishing style */
+}
+
+.listing-price {
+  color: #fbff13; /* Example: green color */
+  font-weight: bolder;
+  font-style: italic;
+  font-size: medium;
+}
   
   
   .map-container {
-    height: 400px; /* Adjust height as needed */
+    height: 350px; /* Adjust height as needed */
     width: 100%; /* Full width of the container */
     margin-bottom: 10px;
     margin-top: 10px;
@@ -94,8 +142,8 @@
   
   body {
     font-family: 'Courier', sans-serif;
-    background-color: #bcd5ee;
-    color: #bcd5ee;
+    background-color: #d0e2f4;
+    color: #d0e2f4;
   }
   
   /* Wrapper for Stepper */
@@ -170,7 +218,7 @@
     max-width: flex;
     margin: 5px auto; /* Center and add space around the main container */
     padding: 20px;
-    background-color: #bcd5ee;
+    background-color: #d0e2f4;
     border-radius: 0px;
   }
   
@@ -192,9 +240,7 @@
     box-sizing: border-box;
     margin-top: 20px; /* Space above the button */
     border-radius: 45px; /* Rounded corners */
-  }
-  /* Other styles remain unchanged */
-  
+  }  
 
 .spinner-container {
     position: absolute;
