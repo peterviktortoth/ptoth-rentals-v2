@@ -1,10 +1,6 @@
 /* styles.css */
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 10px;
-  }
+
   
   .title {
     color: #040303;
@@ -58,8 +54,8 @@
 .result-item {
   margin-bottom: 10px;
   background-color: #424040a4; /* Adjusted */
-  padding: 5px;
-  border-radius: 30px;
+  padding: 10px;
+  border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 14px;
   justify-content: center;
@@ -98,21 +94,29 @@
 .category-title {
   color: #ffffff; /* Example: orange color */
   font-weight: bolder;
+  font-size: medium;
 }
 
 
 .listing-item {
   background-color: #40404000; /* Adjusted */
   padding: 0.5em;
-  margin: 0.5em 0;
+  margin: 0em 0;
   border-left: 0px solid #fff; /* Distinguishing style */
+  text-align: left ;
 }
 
 .listing-price {
-  color: #f0f649; /* Example: green color */
+  color: #f6e249; /* Example: green color */
   font-weight: bolder;
   font-style: italic;
-  font-size: medium;
+  font-size: 14px;
+}
+
+.listing-item-link {
+  text-decoration: underline;
+  color: rgb(14, 92, 144); /* or any specific color you prefer */
+  align-items: left;
 }
   
   
@@ -122,6 +126,7 @@
     margin-bottom: 10px;
     margin-top: 10px;
     position: relative; /* Ensures the map respects the document flow */
+    border: 2px solid #fff
   }
   
   * {
@@ -129,7 +134,7 @@
     padding: 0;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
-    font-family: "Courier", monospace;
+    font-family: "Calibri", monospace;
     font-weight: 600;
   }
   
@@ -141,7 +146,7 @@
   }
   
   body {
-    font-family: 'Courier', sans-serif;
+    font-family: 'Calibri', sans-serif;
     background-color: #d0e2f4;
     color: #d0e2f4;
   }
@@ -242,6 +247,142 @@
     border-radius: 45px; /* Rounded corners */
   }  
 
+  /* Existing styles.css content... */
+
+/* Toggle Button Styles */
+.toggle-button-cover {
+  position: relative;
+  width: 74px; /* Adjust as needed */
+  margin: 10px auto; /* Centering the toggle button */
+}
+
+.toggle-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-label {
+  font-size: 16px;
+  margin: 0 50px; /* Adjust the spacing around the text as needed */
+  color: #000000;
+  align-items: center;
+  width: max-content;
+}
+
+/* ... Rest of your existing styles ... */
+
+
+/* Button Style */
+.button {
+  position: relative;
+  width: 74px;
+  height: 36px;
+  margin: 10px auto; /* Adjust margin as needed */
+  overflow: hidden;
+  border-radius: 100px; /* Rounded edges */
+}
+
+/* Checkbox and Knobs */
+.checkbox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.knobs,
+.layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+
+.layer {
+  background-color: #ebf7fc;
+  transition: 0.3s ease all;
+}
+
+/* Existing .form-button styles remain unchanged */
+.form-button {
+  font-size: 18px;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0px;
+  border-radius: 45px;
+}
+
+
+/* Button Style */
+.button {
+  position: relative;
+  width: 74px;
+  height: 36px;
+  margin: 10px auto; /* Adjust margin as needed */
+  overflow: hidden;
+  border-radius: 100px; /* Rounded edges */
+}
+
+/* Checkbox and Knobs */
+.checkbox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.knobs,
+.layer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* Knobs Style */
+.knobs:before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 28px;
+  background-color: #03a9f4;
+  border-radius: 50%;
+  transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+
+/* Checked State */
+.checkbox:checked + .knobs:before {
+  content: "";
+  left: 42px;
+  background-color: #03a9f4;
+}
+
+.layer {
+  background-color: #00000028;
+  transition: 0.3s ease all;
+}
+
+
 .spinner-container {
     position: absolute;
     top: 50%;
@@ -257,13 +398,41 @@
   }
   
   .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
+    border: 4px solid rgba(0, 0, 0, 0.8);
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    border-left-color: #09f;
+    border-left-color: rgba(0, 153, 255, 0.428);
     animation: spin 1s ease infinite;
   }
+
+  /* Loading Spinner Styles */
+  .loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);  /* Light grey border */
+    border-top: 4px solid #3498db;  /* Blue border */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+  }
+
+  /* Keyframes for spinning effect */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px; /* Adjust height as needed */
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding-bottom: 10px;
+}
+  
   
   @keyframes spin {
     0% {
