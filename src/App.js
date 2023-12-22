@@ -3,7 +3,7 @@ import './styles.css';
 import MapComponent from './mapComponent';
 import sampleResponse from './sampleResponse'; // Import your sample response
 
-const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/prod/rentalInfo'; // Comment out if not using the live API
+const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalsV3-prod'; // Comment out if not using the live API
 
 function App() {
   const [radius, setRadius] = useState(0.1); // Initial radius value
