@@ -112,8 +112,6 @@ function App() {
     setExpandedSection(prevIndex => (prevIndex === index ? null : index));
   };
   
-  
-
   return (
     <div className="container">
       <h1 className="title">Can I Afford to Live Here?</h1>
@@ -128,7 +126,7 @@ function App() {
           <button id="increment" onClick={handleIncrement}>+</button>
         </div>
         <div className="toggle-button-container">
-          <span className="toggle-label">Rentals</span>
+          <span className="toggle-label">Rent</span>
           <div className="toggle-button-cover">
             <div className="button r" id="button-1">
               <input type="checkbox" 
@@ -139,7 +137,7 @@ function App() {
               <div className="layer"></div>
             </div>
           </div>
-          <span className="toggle-label">Sales</span>
+          <span className="toggle-label">Buy</span>
         </div>
         <button type="button" onClick={calculateRentalPrices} className="form-button">
           Show Prices
