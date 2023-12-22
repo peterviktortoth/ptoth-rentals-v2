@@ -115,7 +115,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">Can I Afford to Live Here?</h1>
-      <p className="instructions">Enter a radius in miles to search for properties</p>
+      <p className="instructions">Enter a search radius to see nearby properties</p>
       <div className="wrapper">
         <div className="number-stepper-container">
           <button id="decrement" onClick={handleDecrement}>-</button>
@@ -147,8 +147,8 @@ function App() {
       {loading ? (
         <div className="spinner-wrapper">
           <div className="loading-spinner"></div>
-          </div>
-        ) : (
+        </div>
+      ) : (
         <div>
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
@@ -163,7 +163,7 @@ function App() {
                   onChange={() => handleToggle(index)}
                 />
                 <label htmlFor={`toggle-${index}`} className="category-title">
-                  Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`} - <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                  Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`}  <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
                 </label>
                 <div className={`listing-container ${expandedSection === index ? 'expanded' : ''}`}>
                 {listings && listings.filter(listing => {

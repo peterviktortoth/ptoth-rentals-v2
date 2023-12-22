@@ -53,7 +53,7 @@
 /* Updated Result Item */
 .result-item {
   margin-bottom: 10px;
-  background-color: #424040a4; /* Adjusted */
+  background-color: #42404050; /* Adjusted */
   padding: 10px;
   border-radius: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -77,6 +77,19 @@
   opacity: 0;
 }
 
+.toggle + label::before {
+  content: "+"; /* Right-pointing triangle */
+  display: inline-block;
+  margin-right: 20px; /* Space between the caret and the label text */
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.toggle:checked + label::before {
+  content: "-"; /* Down-pointing triangle */
+  transform: rotate(0deg); /* Adjust rotation if needed */
+}
+
 .toggle ~ .listing-container {
   max-height: 0;
   overflow: hidden;
@@ -87,6 +100,7 @@
   max-height: 1000px; /* Adjust as needed */
 }
 
+
 .listing-container {
   padding: 0 0em; /* Style as needed */
 }
@@ -95,6 +109,14 @@
   color: #ffffff; /* Example: orange color */
   font-weight: bolder;
   font-size: medium;
+  cursor: pointer;
+  display: flex;
+}
+
+.category-title .listing-price {
+  color: #000000; /* Change to your desired color */
+  margin-left: 1em;
+  text-align: right;
 }
 
 
@@ -110,7 +132,8 @@
   color: #f6e249; /* Example: green color */
   font-weight: bolder;
   font-style: italic;
-  font-size: 14px;
+  font-size: 15px;
+  margin-left: 0.5em;
 }
 
 .listing-item-link {
@@ -247,8 +270,6 @@
     border-radius: 45px; /* Rounded corners */
   }  
 
-  /* Existing styles.css content... */
-
 /* Toggle Button Styles */
 .toggle-button-cover {
   position: relative;
@@ -269,9 +290,6 @@
   align-items: center;
   width: max-content;
 }
-
-/* ... Rest of your existing styles ... */
-
 
 /* Button Style */
 .button {
