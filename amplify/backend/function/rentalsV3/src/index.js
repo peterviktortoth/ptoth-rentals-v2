@@ -99,7 +99,15 @@ exports.handler = async (event) => {
   });
 
   const averagePrices = Object.entries(rentalPrices).map(([bedrooms, prices]) => {
-    const averagePrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+    // Filter out prices that are 0
+    const filteredPrices = prices.filter(price => price > 0);
+  
+    // Calculate average only if there are valid prices
+    let averagePrice = 0;
+    if (filteredPrices.length > 0) {
+      averagePrice = filteredPrices.reduce((sum, price) => sum + price, 0) / filteredPrices.length;
+    }
+  
     return { bedrooms, average_price: averagePrice };
   });
 

@@ -147,8 +147,10 @@ function App() {
       </div>
   
       {loading ? (
-        <div className="loading-spinner">Loading...</div>
-      ) : (
+        <div className="spinner-wrapper">
+          <div className="loading-spinner"></div>
+          </div>
+        ) : (
         <div>
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
