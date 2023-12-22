@@ -138,34 +138,34 @@ function App() {
         <div>
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
-  {averagePrices && averagePrices.map((item, index) => (
-    <li key={index} className="result-item">
-      <input 
-        type="radio" 
-        name="accordion" 
-        id={`toggle-${index}`} 
-        className="toggle" 
-        checked={expandedSection === index}
-        onChange={() => handleToggle(index)}
-        onClick={() => handleToggle(index)}
-      />
-      <label htmlFor={`toggle-${index}`} className="category-title">
-        Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`} rental - <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
-      </label>
-      <div className={`listing-container ${expandedSection === index ? 'expanded' : ''}`}>
-        {listings && listings.filter(listing => {
-          const listingBedrooms = String(listing.bedrooms);
-          const itemBedrooms = String(item.bedrooms);
-          return listingBedrooms === itemBedrooms;
-        }).map((listing, listingIndex) => (
-          <div key={listingIndex} className="listing-item">
-            {listing.propertyType} - {listing.formattedAddress} - <span className="listing-price">${listing.price.toLocaleString('en-US')}</span>
-          </div>
-        ))}
-      </div>
-    </li>
-  ))}
-</ul>
+            `{averagePrices && averagePrices.map((item, index) => (
+              <li key={index} className="result-item">
+                <input 
+                  type="radio" 
+                  name="accordion" 
+                  id={`toggle-${index}`} 
+                  className="toggle" 
+                  checked={expandedSection === index}
+                  onChange={() => handleToggle(index)}
+                  onClick={() => handleToggle(index)}
+                />
+                <label htmlFor={`toggle-${index}`} className="category-title">
+                  Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`} rental - <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                </label>
+                <div className={`listing-container ${expandedSection === index ? 'expanded' : ''}`}>
+                  {listings && listings.filter(listing => {
+                    const listingBedrooms = String(listing.bedrooms);
+                    const itemBedrooms = String(item.bedrooms);
+                    return listingBedrooms === itemBedrooms;
+                  }).map((listing, listingIndex) => (
+                    <div key={listingIndex} className="listing-item">
+                      {listing.formattedAddress} - <span className="listing-price">${listing.price.toLocaleString('en-US')}</span>
+                    </div>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ul>
 
 
 

@@ -58,8 +58,8 @@
 .result-item {
   margin-bottom: 10px;
   background-color: #424040a4; /* Adjusted */
-  padding: 5px;
-  border-radius: 30px;
+  padding: 10px;
+  border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-size: 14px;
   justify-content: center;
@@ -109,7 +109,7 @@
 }
 
 .listing-price {
-  color: #f0f649; /* Example: green color */
+  color: #f6e249; /* Example: green color */
   font-weight: bolder;
   font-style: italic;
   font-size: medium;
@@ -122,6 +122,7 @@
     margin-bottom: 10px;
     margin-top: 10px;
     position: relative; /* Ensures the map respects the document flow */
+    border: 2px solid #fff
   }
   
   * {
