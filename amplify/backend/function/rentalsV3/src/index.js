@@ -14,6 +14,12 @@ function generatePolygon(latitude, longitude, radius, numberOfVertices = 30) {
     const newLon = lonRadians + (dY / Math.cos(latRadians));
     coordinates.push(`${newLon * 180 / Math.PI} ${newLat * 180 / Math.PI}`);
   }
+
+  // Repeat the first coordinate at the end to close the polygon
+  if (coordinates.length > 0) {
+    coordinates.push(coordinates[0]);
+  }
+
   return coordinates.join(", ");
 }
 
@@ -21,6 +27,8 @@ exports.handler = async (event) => {
   const latitude = parseFloat(event.queryStringParameters.latitude);
   const longitude = parseFloat(event.queryStringParameters.longitude);
   const radius = parseFloat(event.queryStringParameters.radius || '0.1'); // Default radius
+  const statusType = event.queryStringParameters.statusType || 'ForRent'; // Default to 'ForRent'
+
 
   if (!latitude || !longitude) {
     throw new Error("Coordinates not provided or invalid.");
@@ -32,18 +40,16 @@ exports.handler = async (event) => {
   const polygon = generatePolygon(latitude, longitude, radius);
 
   const url = 'https://zillow-com1.p.rapidapi.com/propertyByPolygon';
-  const headers = {
-    "accept": "application/json",
-    "X-RapidAPI-Key": "591a7713f3msh5c9d90523a6ecc7p19cbbfjsnf76adb1ce074", // Use environment variables or a secure method to store API keys
-    "X-RapidAPI-Host": 'zillow-com1.p.rapidapi.com'
-  };
+  const queryParams = new URLSearchParams({
+    polygon: polygon
+  }).toString();
 
-  const response = await fetch(url, {
+  const response = await fetch(`${url}?${queryParams}&status_type=${statusType}`, {
     method: 'GET',
-    headers: headers,
-    params: {
-      polygon: polygon,
-      home_type: 'Houses'
+    headers: {
+        "accept": "application/json",
+        "X-RapidAPI-Key": "591a7713f3msh5c9d90523a6ecc7p19cbbfjsnf76adb1ce074",
+        "X-RapidAPI-Host": 'zillow-com1.p.rapidapi.com'
     }
   });
 
@@ -51,11 +57,26 @@ exports.handler = async (event) => {
     throw new Error(`Failed to fetch data: ${response.statusText}`);
   }
   const data = await response.json();
+  console.log("API response data:", data); // Log the response data for debugging
 
-  // Process the response data to calculate average prices and extract listings
+  // Check if 'props' exists and is an array
+  if (!Array.isArray(data.props)) {
+    return {
+      statusCode: 500,
+      headers: {"Access-Control-Allow-Origin": "*"},
+      body: JSON.stringify({ error: "Invalid data format from API" })
+    };
+  }
+
   const rentalPrices = {};
   const listings = data.props.map(prop => {
-    const price = prop.price ? parseFloat(prop.price.replace(/\D/g, '')) : 0;
+  // Check if price is a string and contains characters other than digits
+  let price = 0;
+  if (typeof prop.price === 'string') {
+    price = parseFloat(prop.price.replace(/\D/g, ''));
+  } else if (typeof prop.price === 'number') {
+    price = prop.price; // If it's already a number, use it directly
+  }
     const bedrooms = prop.bedrooms || "Unknown";
 
     if (!rentalPrices[bedrooms]) {

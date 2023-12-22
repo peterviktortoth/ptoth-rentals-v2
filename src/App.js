@@ -13,6 +13,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState({ latitude: null, longitude: null });
   const [expandedSections, setExpandedSections] = useState({}); // State for expandable sections
+  const [statusType, setStatusType] = useState('ForRent'); // New state for status type
+
 
   useEffect(() => {
     const getCurrentPosition = () => {
@@ -40,6 +42,7 @@ function App() {
   const calculateRentalPrices = async () => {
     console.log("calculateRentalPrices called");
 
+
     if (isNaN(radius) || radius <= 0) {
       setError('Please enter a valid positive number for the radius.');
       setAveragePrices([]);
@@ -52,7 +55,7 @@ function App() {
     setLoading(true);
 
     try {
-    const response = await fetch(`${API_ENDPOINT}/rentalInfo?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}`, {
+    const response = await fetch(`${API_ENDPOINT}?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}&statusType=${statusType}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -117,7 +120,7 @@ function App() {
   return (
     <div className="container">
       <h1 className="title">Can I Afford to Live Here?</h1>
-      <p className="instructions">Enter a radius in miles to search active rental listings</p>
+      <p className="instructions">Enter a radius in miles to search for properties</p>
       <div className="wrapper">
         <div className="number-stepper-container">
           <button id="decrement" onClick={handleDecrement}>-</button>
@@ -127,18 +130,34 @@ function App() {
           </div>
           <button id="increment" onClick={handleIncrement}>+</button>
         </div>
+        <div className="toggle-button-container">
+  <span className="toggle-label">Rentals</span>
+  <div className="toggle-button-cover">
+    <div className="button r" id="button-1">
+      <input type="checkbox" 
+             className="checkbox" 
+             checked={statusType === 'ForSale'} 
+             onChange={() => setStatusType(statusType === 'ForRent' ? 'ForSale' : 'ForRent')} />
+      <div className="knobs"></div>
+      <div className="layer"></div>
+    </div>
+  </div>
+  <span className="toggle-label">Sales</span>
+
+
+        </div>
         <button type="button" onClick={calculateRentalPrices} className="form-button">
-          Show Average Rental Prices
+          Show Prices
         </button>
       </div>
-
+  
       {loading ? (
         <div className="loading-spinner">Loading...</div>
       ) : (
         <div>
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
-            `{averagePrices && averagePrices.map((item, index) => (
+            {averagePrices && averagePrices.map((item, index) => (
               <li key={index} className="result-item">
                 <input 
                   type="radio" 
@@ -147,10 +166,9 @@ function App() {
                   className="toggle" 
                   checked={expandedSection === index}
                   onChange={() => handleToggle(index)}
-                  onClick={() => handleToggle(index)}
                 />
                 <label htmlFor={`toggle-${index}`} className="category-title">
-                  Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`} rental - <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                  Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`} - <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
                 </label>
                 <div className={`listing-container ${expandedSection === index ? 'expanded' : ''}`}>
                   {listings && listings.filter(listing => {
@@ -166,15 +184,12 @@ function App() {
               </li>
             ))}
           </ul>
-
-
-
         </div>
       )}
-
+  
       <MapComponent coordinates={userCoordinates} radius={parseFloat(radius)} />
     </div>
-  );
+  );  
 }
 
 export default App;
