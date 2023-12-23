@@ -5,13 +5,14 @@
   .title {
     color: #040303;
     text-align: center;
+    font-size: 30px;
   }
 
   .instructions {
     text-align: center;
     color: #000000; /* Adjust color as needed */
     margin-bottom: 0px; /* Space below the text */
-    font-size: 16px; /* Adjust font size as needed */
+    font-size: 14px; /* Adjust font size as needed */
   }
   
   
@@ -56,7 +57,7 @@
   background-color: #42404050; /* Adjusted */
   padding: 10px;
   border-radius: 30px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 10px 10px 10px #aeccf8b8;
   font-size: 14px;
   justify-content: center;
   text-align: center;
@@ -266,6 +267,7 @@
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
+    box-shadow: 10px 10px 10px #aeccf8b8;
     margin-top: 20px; /* Space above the button */
     border-radius: 45px; /* Rounded corners */
   }  
@@ -281,6 +283,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0px
 }
 
 .toggle-label {
