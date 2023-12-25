@@ -58,11 +58,6 @@ exports.handler = async (event) => {
   }
   const data = await response.json();
   console.log("API response data:", data); // Log the response data for debugging
-<<<<<<< Updated upstream
-
-=======
-  
->>>>>>> Stashed changes
   // Check if 'props' exists and is an array
   if (!Array.isArray(data.props)) {
     return {
