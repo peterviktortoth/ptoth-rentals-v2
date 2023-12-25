@@ -3,7 +3,7 @@ import './styles.css';
 import MapComponent from './mapComponent';
 import sampleResponse from './sampleResponse'; // Import your sample response
 
-const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo'; // Comment out if not using the live API
+const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo';
 
 function App() {
   const [radius, setRadius] = useState(0.1); // Initial radius value
@@ -12,7 +12,7 @@ function App() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState({ latitude: null, longitude: null });
-  const [expandedSections, setExpandedSections] = useState({}); // State for expandable sections
+  const [expandedSections, setExpandedSections] = useState([]);
   const [statusType, setStatusType] = useState('ForRent'); // New state for status type
 
 
@@ -32,7 +32,7 @@ function App() {
         });
       } catch (error) {
         console.error('Error getting user location:', error);
-        setError('Unable to fetch user location.');
+        setError('Unable to fetch user location');
       }
     };
 
@@ -77,7 +77,6 @@ function App() {
     }
 };
 
-
   const toggleSection = (bedrooms) => {
     setExpandedSections(prevState => {
       const newState = {
@@ -109,9 +108,15 @@ function App() {
   const [expandedSection, setExpandedSection] = useState(null);
 
   const handleToggle = (index) => {
-    setExpandedSection(prevIndex => (prevIndex === index ? null : index));
+    setExpandedSections(prevExpandedSections => {
+      if (prevExpandedSections.includes(index)) {
+        return prevExpandedSections.filter(sectionIndex => sectionIndex !== index);
+      } else {
+        return [...prevExpandedSections, index];
+      }
+    });
   };
-  
+
   return (
     <div className="container">
       <h1 className="title">Can I Afford to Live Here?</h1>
@@ -152,20 +157,19 @@ function App() {
         <div>
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
-            {averagePrices && averagePrices.map((item, index) => (
-              <li key={index} className="result-item">
-                <input 
-                  type="radio" 
-                  name="accordion" 
-                  id={`toggle-${index}`} 
-                  className="toggle" 
-                  checked={expandedSection === index}
-                  onChange={() => handleToggle(index)}
-                />
+          {averagePrices.map((item, index) => (
+            <li key={index} className="result-item">
+              <input 
+                type="checkbox" 
+                id={`toggle-${index}`} 
+                className="toggle" 
+                onChange={() => handleToggle(index)}
+                checked={expandedSections.includes(index)}
+              />
                 <label htmlFor={`toggle-${index}`} className="category-title">
                   Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`}  <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
                 </label>
-                <div className={`listing-container ${expandedSection === index ? 'expanded' : ''}`}>
+                <div className={`listing-container ${expandedSections.includes(index) ? 'expanded' : ''}`}>
                 {listings && listings.filter(listing => {
                   const listingBedrooms = String(listing.bedrooms);
                   const itemBedrooms = String(item.bedrooms);
@@ -189,7 +193,6 @@ function App() {
           </ul>
         </div>
       )}
-  
       <MapComponent coordinates={userCoordinates} radius={parseFloat(radius)} />
     </div>
   );  
