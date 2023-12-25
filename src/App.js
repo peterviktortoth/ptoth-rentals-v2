@@ -61,19 +61,20 @@ function App() {
         },
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`Failed to fetch rental prices: ${response.statusText}`);
+        throw new Error(data.error || `Failed to fetch rental prices: ${response.statusText}`);
       }
 
-      const data = await response.json();
       setAveragePrices(data.averagePrices);
       setListings(data.listings);
+      setError(''); // Reset error if the request was successful
     } catch (error) {
       console.error(`Error: ${error}`);
       setError(error.message);
     } finally {
       setLoading(false);
-      setExpandedSection(null); // Reset the expanded section to collapse all sections
     }
 };
 

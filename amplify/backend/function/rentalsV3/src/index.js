@@ -58,23 +58,15 @@ exports.handler = async (event) => {
   }
   const data = await response.json();
   console.log("API response data:", data); // Log the response data for debugging
-
-  if (listings.length === 0) {
-    return {
-      statusCode: 404, // You can choose to use 404 or another appropriate status code
-      headers: {"Access-Control-Allow-Origin": "*"},
-      body: JSON.stringify({ error: "No listings found in your search area. Try increasing the radius!" })
-    };
-  }
   
-  // Check if 'props' exists and is an array
-  if (!Array.isArray(data.props)) {
-    return {
-      statusCode: 500,
-      headers: {"Access-Control-Allow-Origin": "*"},
-      body: JSON.stringify({ error: "Invalid data format from API" })
-    };
-  }
+  if (!data.props || !Array.isArray(data.props)) {
+  console.log("No valid 'props' array in the response");
+  return {
+    statusCode: data.props ? 500 : 404,
+    headers: {"Access-Control-Allow-Origin": "*"},
+    body: JSON.stringify({ error: data.props ? "Invalid data format from API" : "No listings found in your search area. Try increasing the radius!" })
+  };
+}
 
   const rentalPrices = {};
   const listings = data.props.map(prop => {
