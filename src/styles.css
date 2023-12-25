@@ -1,450 +1,464 @@
-/* styles.css */
+
+.title {
+  color: #040303;
+  text-align: center;
+  font-size: 30px;
+}
+
+.instructions {
+  text-align: center;
+  color: #000000; /* Adjust color as needed */
+  margin-bottom: 0px; /* Space below the text */
+  font-size: 14px; /* Adjust font size as needed */
+}
+
+.form {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-input {
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
 
-  
-  .title {
-    color: #040303;
-    text-align: center;
-  }
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: small;
+  align-items: center;
+  text-align: center;
+}
 
-  .instructions {
-    text-align: center;
-    color: #000000; /* Adjust color as needed */
-    margin-bottom: 0px; /* Space below the text */
-    font-size: 16px; /* Adjust font size as needed */
-  }
-  
-  
-  .form {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .form-label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .form-input {
-    padding: 10px;
-    margin-bottom: 10px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  
-  .error-message {
-    color: red;
-    margin-top: 10px;
-  }
-  
-  @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
 /* Updated Results List */
 .results-list {
-  list-style-type: none;
-  padding: 5px;
-  background-color: #ffffff00; /* Consider adjusting */
-  border-radius: 0px;
-  justify-content: center;
-  max-width: 420px; /* From template's .accordion */
+list-style-type: none;
+padding: 5px;
+background-color: #ffffff00; /* Consider adjusting */
+border-radius: 0px;
+justify-content: center;
+max-width: 420px; /* From template's .accordion */
 }
 
 /* Updated Result Item */
 .result-item {
-  margin-bottom: 10px;
-  background-color: #424040a4; /* Adjusted */
-  padding: 10px;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-  justify-content: center;
-  text-align: center;
-  color: white;
-  border: 0px solid #fff; /* From template's article */
+margin-bottom: 10px;
+background-color: #42404050; /* Adjusted */
+padding: 10px;
+border-radius: 30px;
+box-shadow: 10px 10px 10px #aeccf8b8;
+font-size: 14px;
+justify-content: center;
+text-align: center;
+color: white;
+border: 0px solid #fff; /* From template's article */
 }
 
 .result-item:hover {
-  background-color: #6cb0f3;
-  color: #000000;
-  border: 2px solid #ffffff;
+background-color: #6cb0f3;
+color: #000000;
+border: 2px solid #ffffff;
 }
 
 /* Accordion and Nested List Styles */
 .toggle {
-  appearance: none;
-  position: absolute;
-  opacity: 0;
+appearance: none;
+position: absolute;
+opacity: 0;
+}
+
+.toggle + label::before {
+content: "+"; /* Right-pointing triangle */
+font-size: larger;
+font-weight: bolder;
+display: inline-block;
+margin-right: 20px; /* Space between the caret and the label text */
+margin-left: 10px;
+transition: transform 0.4s ease-in-out;
+color: rgba(0, 0, 0, 0.611);
+}
+
+.toggle:checked + label::before {
+content: "-"; /* Down-pointing triangle */
+transform: rotate(180deg); /* Adjust rotation if needed */
+transition: transform 0.4s ease-in-out;
+
 }
 
 .toggle ~ .listing-container {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s;
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.5s;
 }
 
 .toggle:checked ~ .listing-container {
-  max-height: 1000px; /* Adjust as needed */
+max-height: 1000px; /* Adjust as needed */
 }
 
+
 .listing-container {
-  padding: 0 0em; /* Style as needed */
+padding: 0 0em; /* Style as needed */
 }
 
 .category-title {
-  color: #ffffff; /* Example: orange color */
-  font-weight: bolder;
-  font-size: medium;
+color: #ffffff; /* Example: orange color */
+font-weight: bolder;
+font-size: medium;
+cursor: pointer;
+display: flex;
+}
+
+.category-title .listing-price {
+color: #000000; /* Change to your desired color */
+margin-left: 1em;
+text-align: right;
 }
 
 
 .listing-item {
-  background-color: #40404000; /* Adjusted */
-  padding: 0.5em;
-  margin: 0em 0;
-  border-left: 0px solid #fff; /* Distinguishing style */
-  text-align: left ;
+background-color: #40404000; /* Adjusted */
+padding: 0.5em;
+margin: 0em 0;
+border-left: 0px solid #fff; /* Distinguishing style */
+text-align: left ;
 }
 
 .listing-price {
-  color: #f6e249; /* Example: green color */
-  font-weight: bolder;
-  font-style: italic;
-  font-size: 14px;
+color: #f6e249; /* Example: green color */
+font-weight: bolder;
+font-style: italic;
+font-size: 15px;
+margin-left: 0.5em;
 }
 
 .listing-item-link {
-  text-decoration: underline;
-  color: rgb(14, 92, 144); /* or any specific color you prefer */
-  align-items: left;
+text-decoration: underline;
+color: rgb(14, 92, 144); /* or any specific color you prefer */
+align-items: left;
 }
+
+
+.map-container {
+  height: 350px; /* Adjust height as needed */
+  width: flex; /* Full width of the container */
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position: relative; /* Ensures the map respects the document flow */
+  border: 2px solid #fff;
   
-  
-  .map-container {
-    height: 350px; /* Adjust height as needed */
-    width: 100%; /* Full width of the container */
-    margin-bottom: 10px;
-    margin-top: 10px;
-    position: relative; /* Ensures the map respects the document flow */
-    border: 2px solid #fff
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-    font-family: "Calibri", monospace;
-    font-weight: 600;
-  }
-  
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
+}
+
 /* General Resets */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Calibri', sans-serif;
-    background-color: #d0e2f4;
-    color: #d0e2f4;
-  }
-  
-  /* Wrapper for Stepper */
-  .wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto; /* Center and add space around the wrapper */
-  }
-  
-  .number-stepper-container {
-    display: flex;
-    justify-content: center; /* Horizontally center the children */
-    align-items: center; /* Vertically center the children */
-    background-color: #ffffff;
-    box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.15);
-    border-radius: 45px;
-    padding: 10px;
-    width: 100%; /* Ensure the container takes full width */
-  }
-  
-  /* Stepper Input and Buttons */
-  input[type="number"], button {
-    font-size: 20px; /* Adjust the font size */
-    padding: 0px; /* Padding for better touch */
-    border: none;
-    background-color: #ffffff;
-    cursor: pointer;
-    width: 100%; /* Make input take full width of its flex item */
-  }
-  
-  #decrement {
-    border-radius: 0px 0 0 0px;
-    font-size: 30px; /* Adjust font size */
-    background-color: #ffffff; /* Background color of the button */
-    color: #4caf50;
-    width: 75%;
-  }
-  
-  #increment {
-    border-radius: 0px 0 0 0px;
-    font-size: 30px; /* Adjust font size */
-    background-color: #ffffff; /* Background color of the button */
-    color: #4caf50;
-    width: 75%;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .input-wrapper {
-    position: relative;
-    display: inline-block; /* Or flex, as per your layout needs */
+body {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: #d0e2f4;
+  color: #d0e2f4;
+}
+
+/* Wrapper for Stepper */
+.wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto; /* Center and add space around the wrapper */
+}
+
+.number-stepper-container {
+  display: flex;
+  justify-content: center; /* Horizontally center the children */
+  align-items: center; /* Vertically center the children */
+  background-color: #ffffff;
+  box-shadow: 30px 30px 30px rgba(0, 0, 0, 0.15);
+  border-radius: 45px;
+  padding: 10px;
+  width: 100%; /* Ensure the container takes full width */
+}
+
+/* Stepper Input and Buttons */
+input[type="number"], button {
+  font-size: 20px; /* Adjust the font size */
+  padding: 0px; /* Padding for better touch */
+  border: none;
+  background-color: #ffffff;
+  text-align: center;
+  cursor: pointer;
+  width: 50%; /* Make input take full width of its flex item */
+}
+
+#decrement {
+  border-radius: 0px 0 0 0px;
+  font-size: 30px; /* Adjust font size */
+  background-color: #ffffff; /* Background color of the button */
+  color: #4caf50;
+  width: 75%;
+}
+
+#increment {
+  border-radius: 0px 0 0 0px;
+  font-size: 30px; /* Adjust font size */
+  background-color: #ffffff; /* Background color of the button */
+  color: #4caf50;
+  width: 75%;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block; /* Or flex, as per your layout needs */
 }
 
 .input-container {
-    display: flex;
-    align-items: center; /* Aligns input and span vertically */
+  display: flex;
+  align-items: center; /* Aligns input and span vertically */
 }
 
 
 .input-with-suffix {
-    display: flex;
-    align-items: center; /* Aligns input and span vertically */
+  display: flex;
+  align-items: center; /* Aligns input and span vertically */
 }
 
 .suffix {
-    margin-left: px; /* Spacing between input and text */
-    color: #010101;
-}
-
-  
-  /* Main Container */
-  .container {
-    max-width: flex;
-    margin: 5px auto; /* Center and add space around the main container */
-    padding: 20px;
-    background-color: #d0e2f4;
-    border-radius: 0px;
-  }
-  
-  /* Title */
-  .title {
-    text-align: center;
-    margin-bottom: 20px; /* Space below the title */
-  }
-  
- /* Form Button */
-.form-button {
-    font-size: 18px;
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
-    margin-top: 20px; /* Space above the button */
-    border-radius: 45px; /* Rounded corners */
-  }  
-
-  /* Existing styles.css content... */
-
-/* Toggle Button Styles */
-.toggle-button-cover {
-  position: relative;
-  width: 74px; /* Adjust as needed */
-  margin: 10px auto; /* Centering the toggle button */
-}
-
-.toggle-button-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.toggle-label {
-  font-size: 16px;
-  margin: 0 50px; /* Adjust the spacing around the text as needed */
-  color: #000000;
-  align-items: center;
-  width: max-content;
-}
-
-/* ... Rest of your existing styles ... */
-
-
-/* Button Style */
-.button {
-  position: relative;
-  width: 74px;
-  height: 36px;
-  margin: 10px auto; /* Adjust margin as needed */
-  overflow: hidden;
-  border-radius: 100px; /* Rounded edges */
-}
-
-/* Checkbox and Knobs */
-.checkbox {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 3;
-}
-
-.knobs,
-.layer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  margin-left: px; /* Spacing between input and text */
+  color: #010101;
 }
 
 
-.layer {
-  background-color: #ebf7fc;
-  transition: 0.3s ease all;
+/* Main Container */
+.container {
+  max-width: flex;
+  margin: 5px auto; /* Center and add space around the main container */
+  padding: 20px;
+  background-color: #d0e2f4;
+  border-radius: 0px;
 }
 
-/* Existing .form-button styles remain unchanged */
+/* Title */
+.title {
+  text-align: center;
+  margin-bottom: 20px; /* Space below the title */
+}
+
+/* Form Button */
 .form-button {
   font-size: 18px;
-  padding: 10px;
   background-color: #4caf50;
   color: white;
   border: none;
   cursor: pointer;
+  padding: 10px;
   width: 100%;
   box-sizing: border-box;
-  margin-top: 0px;
-  border-radius: 45px;
+  box-shadow: 10px 10px 10px #aeccf8b8;
+  border-radius: 45px; /* Rounded corners */
+}  
+
+/* Toggle Button Styles */
+.toggle-button-cover {
+position: relative;
+width: 74px; /* Adjust as needed */
+margin: 10px auto; /* Centering the toggle button */
+}
+
+.toggle-button-container {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 0px
+}
+
+.toggle-label {
+font-size: 16px;
+margin: 0 50px; /* Adjust the spacing around the text as needed */
+color: #000000;
+align-items: center;
+width: max-content;
+}
+
+/* Button Style */
+.button {
+position: relative;
+width: 74px;
+height: 36px;
+margin: 10px auto; /* Adjust margin as needed */
+overflow: hidden;
+border-radius: 100px; /* Rounded edges */
+}
+
+/* Checkbox and Knobs */
+.checkbox {
+position: absolute;
+width: 100%;
+height: 100%;
+opacity: 0;
+cursor: pointer;
+z-index: 3;
+}
+
+.knobs,
+.layer {
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+}
+
+
+.layer {
+background-color: #ebf7fc;
+transition: 0.3s ease all;
 }
 
 
 /* Button Style */
 .button {
-  position: relative;
-  width: 74px;
-  height: 36px;
-  margin: 10px auto; /* Adjust margin as needed */
-  overflow: hidden;
-  border-radius: 100px; /* Rounded edges */
+position: relative;
+width: 74px;
+height: 36px;
+margin: 10px auto; /* Adjust margin as needed */
+overflow: hidden;
+border-radius: 100px; /* Rounded edges */
 }
 
 /* Checkbox and Knobs */
 .checkbox {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 3;
+position: absolute;
+width: 100%;
+height: 100%;
+opacity: 0;
+cursor: pointer;
+z-index: 3;
 }
 
 .knobs,
 .layer {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
 }
 
 /* Knobs Style */
 .knobs:before {
-  content: "";
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 28px;
-  height: 28px;
-  color: #fff;
-  font-size: 10px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 28px;
-  background-color: #03a9f4;
-  border-radius: 50%;
-  transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+content: "";
+position: absolute;
+top: 4px;
+left: 4px;
+width: 28px;
+height: 28px;
+color: #fff;
+font-size: 10px;
+font-weight: bold;
+text-align: center;
+line-height: 28px;
+background-color: #03a9f4;
+border-radius: 50%;
+transition: 0.5s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
 }
 
 /* Checked State */
 .checkbox:checked + .knobs:before {
-  content: "";
-  left: 42px;
-  background-color: #03a9f4;
+content: "";
+left: 42px;
+background-color: #03a9f4;
 }
 
 .layer {
-  background-color: #00000028;
-  transition: 0.3s ease all;
+background-color: #00000028;
+transition: 0.3s ease all;
 }
 
 
 .spinner-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-  
-  .spinner-text {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.8);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border-left-color: rgba(0, 153, 255, 0.428);
-    animation: spin 1s ease infinite;
-  }
-
-  /* Loading Spinner Styles */
-  .loading-spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);  /* Light grey border */
-    border-top: 4px solid #3498db;  /* Blue border */
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 2s linear infinite;
-  }
-
-  /* Keyframes for spinning effect */
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  .spinner-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 20px; /* Adjust height as needed */
-    width: 100%;
-    top: 0;
-    left: 0;
-    padding-bottom: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  align-items: center !important;
+  align-content: center;
 }
-  
-  
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+
+.spinner-text {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.8);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: rgba(0, 153, 255, 0.428);
+  animation: spin 1s ease infinite;
+  align-items: center;
+  align-content: center;
+  margin-left: 30%;
+}
+
+/* Loading Spinner Styles */
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);  /* Light grey border */
+  border-top: 4px solid #3498db;  /* Blue border */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  align-items: center;
+  text-align: center;
+}
+
+/* Keyframes for spinning effect */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px; /* Adjust height as needed */
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding-bottom: 10px;
+  align-content: center;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-
-
-
-  
-  
+  100% {
+    transform: rotate(360deg);
+  }
+}
