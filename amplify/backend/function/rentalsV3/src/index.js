@@ -58,7 +58,11 @@ exports.handler = async (event) => {
   }
   const data = await response.json();
   console.log("API response data:", data); // Log the response data for debugging
+<<<<<<< Updated upstream
 
+=======
+  
+>>>>>>> Stashed changes
   // Check if 'props' exists and is an array
   if (!Array.isArray(data.props)) {
     return {
@@ -97,6 +101,14 @@ exports.handler = async (event) => {
       // Include other relevant details here
     };
   });
+  
+   if (listings.length === 0) {
+    return {
+      statusCode: 404, // You can choose to use 404 or another appropriate status code
+      headers: {"Access-Control-Allow-Origin": "*"},
+      body: JSON.stringify({ error: "No listings found in your search area. Try increasing the radius!" })
+    };
+  }
 
   const averagePrices = Object.entries(rentalPrices).map(([bedrooms, prices]) => {
     // Filter out prices that are 0
