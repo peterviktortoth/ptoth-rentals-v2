@@ -14,6 +14,8 @@ function App() {
   const [userCoordinates, setUserCoordinates] = useState({ latitude: null, longitude: null });
   const [expandedSections, setExpandedSections] = useState([]);
   const [statusType, setStatusType] = useState('ForRent'); // New state for status type
+  const [displayedListings, setDisplayedListings] = useState([]);
+
 
 
   useEffect(() => {
@@ -110,13 +112,27 @@ function App() {
 
   const handleToggle = (index) => {
     setExpandedSections(prevExpandedSections => {
-      if (prevExpandedSections.includes(index)) {
-        return prevExpandedSections.filter(sectionIndex => sectionIndex !== index);
-      } else {
-        return [...prevExpandedSections, index];
-      }
+      const isSectionExpanded = prevExpandedSections.includes(index);
+
+      // Toggle the section's expanded state
+      const newExpandedSections = isSectionExpanded
+        ? prevExpandedSections.filter(sectionIndex => sectionIndex !== index)
+        : [...prevExpandedSections, index];
+
+      // Update displayed listings based on the new expanded sections
+      const newDisplayedListings = listings.filter(listing => {
+        const listingBedrooms = String(listing.bedrooms);
+        return newExpandedSections.some(expandedIndex => {
+          const itemBedrooms = String(averagePrices[expandedIndex].bedrooms);
+          return listingBedrooms === itemBedrooms;
+        });
+      });
+
+      setDisplayedListings(newDisplayedListings);
+      return newExpandedSections;
     });
   };
+
 
   return (
     <div className="container">
@@ -194,8 +210,11 @@ function App() {
           </ul>
         </div>
       )}
-      <MapComponent coordinates={userCoordinates} radius={parseFloat(radius)} />
-    </div>
+    <MapComponent 
+          coordinates={userCoordinates} 
+          radius={parseFloat(radius)} 
+          listings={displayedListings} 
+        />    </div>
   );  
 }
 
