@@ -38,12 +38,9 @@
   text-align: center;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-
 /* Updated Results List */
 .results-list {
 list-style-type: none;
-padding: 5px;
 background-color: #ffffff00; /* Consider adjusting */
 border-radius: 0px;
 justify-content: center;
@@ -79,11 +76,9 @@ opacity: 0;
 
 .toggle + label::before {
 content: "+"; /* Right-pointing triangle */
-font-size: larger;
-font-weight: bolder;
 display: inline-block;
-margin-right: 20px; /* Space between the caret and the label text */
-margin-left: 10px;
+margin-right: 10px; /* Space between the caret and the label text */
+margin-left: 5px;
 transition: transform 0.4s ease-in-out;
 color: rgba(0, 0, 0, 0.611);
 }
@@ -92,7 +87,7 @@ color: rgba(0, 0, 0, 0.611);
 content: "-"; /* Down-pointing triangle */
 transform: rotate(180deg); /* Adjust rotation if needed */
 transition: transform 0.4s ease-in-out;
-
+text-justify:auto;
 }
 
 .toggle ~ .listing-container {
@@ -112,15 +107,16 @@ padding: 0 0em; /* Style as needed */
 
 .category-title {
 color: #ffffff; /* Example: orange color */
-font-weight: bolder;
 font-size: medium;
 cursor: pointer;
 display: flex;
+text-justify: auto;
+justify-items: center;
 }
 
 .category-title .listing-price {
 color: #000000; /* Change to your desired color */
-margin-left: 1em;
+margin-left: 0.5em;
 text-align: right;
 }
 
