@@ -11,6 +11,15 @@ const MapComponent = ({ coordinates, radius, listings }) => {
   const [isMapLoading, setIsMapLoading] = useState(true);
   const listingMarkersRef = useRef([]);
 
+  const formatPrice = (price) => {
+    if (price >= 1e6) {
+      return `$${(price / 1e6).toFixed(1)}M`;
+    } else if (price >= 1e3) {
+      return `$${(price / 1e3).toFixed(0)}k`;
+    }
+    return `$${price}`;
+  };
+
   // Convert radius from miles to kilometers
   const getRadiusInKilometers = (miles) => miles * 1.60934;
 
@@ -102,7 +111,43 @@ const MapComponent = ({ coordinates, radius, listings }) => {
     }
   }, [listings]);
 
-  
+  useEffect(() => {
+    const addListingMarkers = () => {
+      listingMarkersRef.current.forEach(marker => marker.remove());
+      listingMarkersRef.current = [];
+
+      listings.forEach(listing => {
+        const formattedPrice = formatPrice(listing.price);
+        const customMarkerEl = createCustomMarkerElement(formattedPrice);
+        const marker = new mapboxgl.Marker({ element: customMarkerEl, anchor: 'bottom' })
+          .setLngLat([listing.longitude, listing.latitude])
+          .addTo(map.current);
+        listingMarkersRef.current.push(marker);
+      });
+    };
+
+    if (map.current) {
+      addListingMarkers();
+    }
+  }, [listings]);
+
+  const createCustomMarkerElement = (priceLabel) => {
+    const el = document.createElement('div');
+    el.className = 'custom-marker';
+
+    // Create a div for the price label
+    const priceLabelDiv = document.createElement('div');
+    priceLabelDiv.className = 'price-label';
+    priceLabelDiv.textContent = priceLabel;
+    el.appendChild(priceLabelDiv);
+
+    // Create a div for the marker icon
+    const markerIcon = document.createElement('div');
+    markerIcon.className = 'marker-icon';
+    el.appendChild(markerIcon);
+
+    return el;
+  };
 
   const updateCircle = () => {
     const radiusInKilometers = getRadiusInKilometers(radius);
@@ -115,8 +160,6 @@ const MapComponent = ({ coordinates, radius, listings }) => {
         type: 'geojson',
         data: circleGeoJSON
       });
-
-      
   
       map.current.addLayer({
         id: 'circle-layer',
@@ -124,7 +167,7 @@ const MapComponent = ({ coordinates, radius, listings }) => {
         source: 'circle-source',
         paint: {
           'fill-color': 'blue',
-          'fill-opacity': 0.5
+          'fill-opacity': 0.3
         }
       });
     }
