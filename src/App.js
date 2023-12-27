@@ -14,6 +14,8 @@ function App() {
   const [userCoordinates, setUserCoordinates] = useState({ latitude: null, longitude: null });
   const [expandedSections, setExpandedSections] = useState([]);
   const [statusType, setStatusType] = useState('ForRent'); // New state for status type
+  const [displayedListings, setDisplayedListings] = useState([]);
+
 
 
   useEffect(() => {
@@ -61,19 +63,20 @@ function App() {
         },
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`Failed to fetch rental prices: ${response.statusText}`);
+        throw new Error(data.error || `Failed to fetch rental prices: ${response.statusText}`);
       }
 
-      const data = await response.json();
       setAveragePrices(data.averagePrices);
       setListings(data.listings);
+      setError(''); // Reset error if the request was successful
     } catch (error) {
       console.error(`Error: ${error}`);
       setError(error.message);
     } finally {
       setLoading(false);
-      setExpandedSection(null); // Reset the expanded section to collapse all sections
     }
 };
 
@@ -109,18 +112,32 @@ function App() {
 
   const handleToggle = (index) => {
     setExpandedSections(prevExpandedSections => {
-      if (prevExpandedSections.includes(index)) {
-        return prevExpandedSections.filter(sectionIndex => sectionIndex !== index);
-      } else {
-        return [...prevExpandedSections, index];
-      }
+      const isSectionExpanded = prevExpandedSections.includes(index);
+
+      // Toggle the section's expanded state
+      const newExpandedSections = isSectionExpanded
+        ? prevExpandedSections.filter(sectionIndex => sectionIndex !== index)
+        : [...prevExpandedSections, index];
+
+      // Update displayed listings based on the new expanded sections
+      const newDisplayedListings = listings.filter(listing => {
+        const listingBedrooms = String(listing.bedrooms);
+        return newExpandedSections.some(expandedIndex => {
+          const itemBedrooms = String(averagePrices[expandedIndex].bedrooms);
+          return listingBedrooms === itemBedrooms;
+        });
+      });
+
+      setDisplayedListings(newDisplayedListings);
+      return newExpandedSections;
     });
   };
+
 
   return (
     <div className="container">
       <h1 className="title">Can I Afford to Live Here?</h1>
-      <p className="instructions">Enter a radius in miles to search for properties</p>
+      <p className="instructions">Enter a search radius to see nearby properties</p>
       <div className="wrapper">
         <div className="number-stepper-container">
           <button id="decrement" onClick={handleDecrement}>-</button>
@@ -131,7 +148,7 @@ function App() {
           <button id="increment" onClick={handleIncrement}>+</button>
         </div>
         <div className="toggle-button-container">
-          <span className="toggle-label">Rentals</span>
+          <span className="toggle-label">Rent</span>
           <div className="toggle-button-cover">
             <div className="button r" id="button-1">
               <input type="checkbox" 
@@ -142,7 +159,7 @@ function App() {
               <div className="layer"></div>
             </div>
           </div>
-          <span className="toggle-label">Sales</span>
+          <span className="toggle-label">Buy</span>
         </div>
         <button type="button" onClick={calculateRentalPrices} className="form-button">
           Show Prices
@@ -152,8 +169,8 @@ function App() {
       {loading ? (
         <div className="spinner-wrapper">
           <div className="loading-spinner"></div>
-          </div>
-        ) : (
+        </div>
+      ) : (
         <div>
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
@@ -193,8 +210,11 @@ function App() {
           </ul>
         </div>
       )}
-      <MapComponent coordinates={userCoordinates} radius={parseFloat(radius)} />
-    </div>
+    <MapComponent 
+          coordinates={userCoordinates} 
+          radius={parseFloat(radius)} 
+          listings={displayedListings} 
+        />    </div>
   );  
 }
 

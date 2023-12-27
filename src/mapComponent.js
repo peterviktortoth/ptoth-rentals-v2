@@ -4,11 +4,12 @@ import './styles.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0ZXJ2aWt0b3J0b3RoIiwiYSI6ImNscWN5bWM1ZzA3b3kyanBhMndyZW44eTMifQ.4le2l0XBKj7DKKYzu_LgyQ';
 
-const MapComponent = ({ coordinates, radius }) => {
+const MapComponent = ({ coordinates, radius, listings }) => {
   const mapContainerRef = useRef(null);
   const map = useRef(null);
-  const marker = useRef(null);
+  const userLocationMarker = useRef(null);
   const [isMapLoading, setIsMapLoading] = useState(true);
+  const listingMarkersRef = useRef([]);
 
   // Convert radius from miles to kilometers
   const getRadiusInKilometers = (miles) => miles * 1.60934;
@@ -62,7 +63,8 @@ const MapComponent = ({ coordinates, radius }) => {
         keyboard: true,
       });
 
-      marker.current = new mapboxgl.Marker()
+      // Add user location marker
+      userLocationMarker.current = new mapboxgl.Marker()
         .setLngLat([coordinates.longitude, coordinates.latitude])
         .addTo(map.current);
 
@@ -79,17 +81,42 @@ const MapComponent = ({ coordinates, radius }) => {
     }
   }, [radius]);
 
+  useEffect(() => {
+    // Function to add markers for listings
+    const addListingMarkers = () => {
+      // Clear existing listing markers
+      listingMarkersRef.current.forEach(marker => marker.remove());
+      listingMarkersRef.current = [];
+
+      // Add new markers for listings
+      listings.forEach(listing => {
+        const marker = new mapboxgl.Marker({ color: "#0000FF" }) // Blue color for listings
+          .setLngLat([listing.longitude, listing.latitude])
+          .addTo(map.current);
+        listingMarkersRef.current.push(marker);
+      });
+    };
+
+    if (map.current) {
+      addListingMarkers();
+    }
+  }, [listings]);
+
+  
+
   const updateCircle = () => {
     const radiusInKilometers = getRadiusInKilometers(radius);
     const circleGeoJSON = createCircleGeoJSON([coordinates.longitude, coordinates.latitude], radiusInKilometers);
   
     if (map.current.getSource('circle-source')) {
-      animateCircleTransition(circleGeoJSON, 500); // 1000 milliseconds for transition
+      map.current.getSource('circle-source').setData(circleGeoJSON);
     } else {
       map.current.addSource('circle-source', {
         type: 'geojson',
         data: circleGeoJSON
       });
+
+      
   
       map.current.addLayer({
         id: 'circle-layer',
@@ -101,43 +128,6 @@ const MapComponent = ({ coordinates, radius }) => {
         }
       });
     }
-  };
-  
-  const animateCircleTransition = (finalGeoJSON, duration) => {
-    const startTime = performance.now();
-    const initialGeoJSON = map.current.getSource('circle-source')._data;
-  
-    const animate = (currentTime) => {
-      const elapsedTime = currentTime - startTime;
-      const t = Math.min(1, elapsedTime / duration); // t ranges from 0 to 1
-  
-      const interpolatedGeoJSON = interpolateGeoJSON(initialGeoJSON, finalGeoJSON, t);
-      map.current.getSource('circle-source').setData(interpolatedGeoJSON);
-  
-      if (t < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-  
-    requestAnimationFrame(animate);
-  };
-  
-  const interpolateGeoJSON = (initialGeoJSON, finalGeoJSON, t) => {
-    const interpolated = {
-      ...initialGeoJSON,
-      geometry: {
-        ...initialGeoJSON.geometry,
-        coordinates: [initialGeoJSON.geometry.coordinates[0].map((coord, index) => {
-          const finalCoord = finalGeoJSON.geometry.coordinates[0][index];
-          return [
-            coord[0] + t * (finalCoord[0] - coord[0]),
-            coord[1] + t * (finalCoord[1] - coord[1])
-          ];
-        })]
-      }
-    };
-    return interpolated;
-    
   };
 
   return (
