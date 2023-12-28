@@ -19,3 +19,4 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+/Users/peter/Documents/GitHub/ptoth-rentals-v2/process.env

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import './styles.css';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoicGV0ZXJ2aWt0b3J0b3RoIiwiYSI6ImNscWN5bWM1ZzA3b3kyanBhMndyZW44eTMifQ.4le2l0XBKj7DKKYzu_LgyQ';
+mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
 
 const MapComponent = ({ coordinates, radius, listings }) => {
   const mapContainerRef = useRef(null);

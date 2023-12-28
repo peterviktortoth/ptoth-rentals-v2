@@ -401,6 +401,7 @@ transition: 0.5s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
   height: 100%;
   background-color: rgba(5, 66, 249, 0.592); /* marker color */
   border-radius: 50%;
+  border: 2px solid #fff;
 
 }
 
