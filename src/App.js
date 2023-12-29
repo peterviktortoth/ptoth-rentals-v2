@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import MapComponent from './mapComponent';
-import sampleResponse from './sampleResponse'; // Import your sample response
+import { logExternalLinkClick } from './awsLogger';
+
 
 const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo';
 
@@ -133,6 +134,10 @@ function App() {
     });
   };
 
+  const handleExternalLinkClick = (url) => {
+    logExternalLinkClick(url);
+  };
+
 
   return (
     <div className="container">
@@ -198,6 +203,7 @@ function App() {
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="listing-item-link"
+                      onClick={() => handleExternalLinkClick(`https://www.zillow.com${listing.detailUrl}`)}
                     >
                       {listing.address.split(',')[0]}
                     </a>
