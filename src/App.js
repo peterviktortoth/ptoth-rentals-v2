@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import MapComponent from './mapComponent';
-import { logExternalLinkClick } from './awsLogger';
+import ReactGA4 from 'react-ga4';
+
 
 
 const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo';
@@ -18,6 +19,10 @@ function App() {
   const [displayedListings, setDisplayedListings] = useState([]);
 
 
+  useEffect(() => {
+    ReactGA4.initialize('G-72LH4NNPY2');
+    ReactGA4.send('pageview');
+  }, []);
 
   useEffect(() => {
     const getCurrentPosition = () => {
@@ -135,9 +140,13 @@ function App() {
   };
 
   const handleExternalLinkClick = (url) => {
-    logExternalLinkClick(url);
+    // Google Analytics event tracking for link clicks
+    ReactGA4.event({
+      category: 'External Link',
+      action: 'Click',
+      label: url
+    });
   };
-
 
   return (
     <div className="container">
