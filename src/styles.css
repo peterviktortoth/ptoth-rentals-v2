@@ -44,6 +44,9 @@ list-style-type: none;
 background-color: #ffffff00; /* Consider adjusting */
 border-radius: 0px;
 justify-content: center;
+margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 max-width: 420px; /* From template's .accordion */
 }
 
