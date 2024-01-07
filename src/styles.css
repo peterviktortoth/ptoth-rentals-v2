@@ -52,17 +52,18 @@ max-width: 420px; /* From template's .accordion */
 margin-bottom: 10px;
 background-color: #42404050; /* Adjusted */
 padding: 10px;
-border-radius: 30px;
+border-radius: 20px;
 box-shadow: 10px 10px 10px #aeccf8b8;
 font-size: 14px;
 justify-content: center;
 text-align: center;
 color: white;
-border: 0px solid #fff; /* From template's article */
+border: 1px solid #fff;
+
 }
 
 .result-item:hover {
-background-color: #6cb0f3;
+background-color: #54a2ef;
 color: #000000;
 border: 2px solid #ffffff;
 }
@@ -118,6 +119,7 @@ justify-items: center;
 color: #000000; /* Change to your desired color */
 margin-left: 0.5em;
 text-align: right;
+margin-bottom: 5px;
 }
 
 
@@ -139,7 +141,7 @@ margin-left: 0.5em;
 
 .listing-item-link {
 text-decoration: underline;
-color: rgb(14, 92, 144); /* or any specific color you prefer */
+color: rgb(255, 255, 255); /* or any specific color you prefer */
 align-items: left;
 }
 
