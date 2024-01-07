@@ -57,7 +57,6 @@ const MapComponent = ({ coordinates, radius, listings, onCoordinateChange }) => 
   };
 
   useEffect(() => {
-    console.log("Radius prop in MapComponent:", radius);
     if (!coordinates || !coordinates.latitude || !coordinates.longitude) return;
 
     if (!map.current) {

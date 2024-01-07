@@ -236,7 +236,10 @@ function App() {
           radius={parseFloat(radius)} 
           listings={displayedListings} 
           onCoordinateChange={handleCoordinateChange}
-        />    </div>
+        /> 
+        {/* Tip text below the MapComponent */}
+      <p className="map-tip">Change the search location by dragging the marker on the map</p>
+        </div>
   );  
 }
 
