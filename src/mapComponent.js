@@ -4,7 +4,7 @@ import './styles.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGV0ZXJ2aWt0b3J0b3RoIiwiYSI6ImNscWN5bWM1ZzA3b3kyanBhMndyZW44eTMifQ.4le2l0XBKj7DKKYzu_LgyQ';
 
-const MapComponent = ({ coordinates, radius, listings }) => {
+const MapComponent = ({ coordinates, radius, listings, onCoordinateChange }) => {
   const mapContainerRef = useRef(null);
   const map = useRef(null);
   const userLocationMarker = useRef(null);
@@ -57,6 +57,7 @@ const MapComponent = ({ coordinates, radius, listings }) => {
   };
 
   useEffect(() => {
+    console.log("Radius prop in MapComponent:", radius);
     if (!coordinates || !coordinates.latitude || !coordinates.longitude) return;
 
     if (!map.current) {
@@ -73,22 +74,40 @@ const MapComponent = ({ coordinates, radius, listings }) => {
       });
 
       // Add user location marker
-      userLocationMarker.current = new mapboxgl.Marker()
-        .setLngLat([coordinates.longitude, coordinates.latitude])
-        .addTo(map.current);
+      userLocationMarker.current = new mapboxgl.Marker({ draggable: true })
+      .setLngLat([coordinates.longitude, coordinates.latitude])
+      .addTo(map.current);
 
-      map.current.on('load', () => {
-        setIsMapLoading(false);
-        updateCircle();
-      });
-    }
-  }, [coordinates]);
+    userLocationMarker.current.on('dragend', onDragEnd);
 
-  useEffect(() => {
-    if (map.current && map.current.isStyleLoaded()) {
-      updateCircle();
-    }
-  }, [radius]);
+    map.current.on('load', () => {
+      setIsMapLoading(false);
+      updateCircle({ lng: coordinates.longitude, lat: coordinates.latitude }, radius);
+    });
+  }
+}, [coordinates, radius]);
+
+const radiusRef = useRef(radius);
+
+useEffect(() => {
+  radiusRef.current = radius;
+}, [radius]);
+
+const onDragEnd = () => {
+  const currentRadius = radiusRef.current;
+  const newLngLat = userLocationMarker.current.getLngLat();
+  updateCircle(newLngLat, currentRadius);
+  onCoordinateChange(newLngLat.lat, newLngLat.lng);
+};
+
+
+useEffect(() => {
+  if (map.current && map.current.isStyleLoaded() && userLocationMarker.current) {
+    const currentLngLat = userLocationMarker.current.getLngLat();
+    updateCircle(currentLngLat, radius);
+  }
+}, [radius]);
+
 
   useEffect(() => {
     // Function to add markers for listings
@@ -149,29 +168,30 @@ const MapComponent = ({ coordinates, radius, listings }) => {
     return el;
   };
 
-  const updateCircle = () => {
+  const updateCircle = (newLngLat, radius) => {
     const radiusInKilometers = getRadiusInKilometers(radius);
-    const circleGeoJSON = createCircleGeoJSON([coordinates.longitude, coordinates.latitude], radiusInKilometers);
+    const circleGeoJSON = createCircleGeoJSON([newLngLat.lng, newLngLat.lat], radiusInKilometers);
   
     if (map.current.getSource('circle-source')) {
-      map.current.getSource('circle-source').setData(circleGeoJSON);
+        map.current.getSource('circle-source').setData(circleGeoJSON);
     } else {
-      map.current.addSource('circle-source', {
-        type: 'geojson',
-        data: circleGeoJSON
-      });
-  
-      map.current.addLayer({
-        id: 'circle-layer',
-        type: 'fill',
-        source: 'circle-source',
-        paint: {
-          'fill-color': 'blue',
-          'fill-opacity': 0.3
-        }
-      });
+        map.current.addSource('circle-source', {
+            type: 'geojson',
+            data: circleGeoJSON
+        });
+
+        map.current.addLayer({
+            id: 'circle-layer',
+            type: 'fill',
+            source: 'circle-source',
+            paint: {
+                'fill-color': 'blue',
+                'fill-opacity': 0.3
+            }
+        });
     }
-  };
+};
+  
 
   return (
     <div className="map-container">

@@ -47,6 +47,12 @@ function App() {
     fetchCoordinates();
   }, []);
 
+  const handleCoordinateChange = (newLatitude, newLongitude) => {
+    setUserCoordinates({ latitude: newLatitude, longitude: newLongitude });
+    // Optionally, you can also trigger fetching new rental listings here
+  };
+  
+
   const calculateRentalPrices = async () => {
     console.log("calculateRentalPrices called");
 
@@ -229,6 +235,7 @@ function App() {
           coordinates={userCoordinates} 
           radius={parseFloat(radius)} 
           listings={displayedListings} 
+          onCoordinateChange={handleCoordinateChange}
         />    </div>
   );  
 }
