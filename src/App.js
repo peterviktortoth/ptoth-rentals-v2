@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './styles.css';
 import MapComponent from './mapComponent';
 import ReactGA4 from 'react-ga4';
+import ListingModal from './ListingModal';
+
 
 
 
@@ -17,6 +19,16 @@ function App() {
   const [expandedSections, setExpandedSections] = useState([]);
   const [statusType, setStatusType] = useState('ForRent'); // New state for status type
   const [displayedListings, setDisplayedListings] = useState([]);
+  const [selectedListing, setSelectedListing] = useState(null);
+
+
+  const handleListingClick = (listing) => {
+    setSelectedListing(listing);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedListing(null);
+  };
 
 
   useEffect(() => {
@@ -195,39 +207,36 @@ function App() {
           {error && <div className="error-message">{error}</div>}
           <ul className="results-list">
           {averagePrices.map((item, index) => (
-            <li key={index} className="result-item">
-              <input 
-                type="checkbox" 
-                id={`toggle-${index}`} 
-                className="toggle" 
-                onChange={() => handleToggle(index)}
-                checked={expandedSections.includes(index)}
-              />
-                <label htmlFor={`toggle-${index}`} className="category-title">
-                  Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`}  <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
-                </label>
-                <div className={`listing-container ${expandedSections.includes(index) ? 'expanded' : ''}`}>
-                {listings && listings.filter(listing => {
-                  const listingBedrooms = String(listing.bedrooms);
-                  const itemBedrooms = String(item.bedrooms);
-                  return listingBedrooms === itemBedrooms;
-                }).map((listing, listingIndex) => (
-                  <div key={listingIndex} className="listing-item">
-                    <a 
-                      href={`https://www.zillow.com${listing.detailUrl}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="listing-item-link"
-                      onClick={() => handleExternalLinkClick(`https://www.zillow.com${listing.detailUrl}`)}
-                    >
-                      {listing.address.split(',')[0]}
-                    </a>
-                    <span className="listing-price"> ${listing.price.toLocaleString('en-US')}</span>
-                  </div>
-                ))}
-                </div>
-              </li>
+      <li key={index} 
+      className={`result-item ${expandedSections.includes(index) ? 'expanded' : ''}`}
+      >
+    <input 
+      type="checkbox"
+      className="toggle"
+      id={`toggle-${index}`}
+      checked={expandedSections.includes(index)}
+      onChange={() => handleToggle(index)}
+    />
+    <label htmlFor={`toggle-${index}`} className="category-title">
+    Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`}  <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+    </label>
+          <div className={`listing-container ${expandedSections.includes(index) ? 'expanded' : ''}`}>
+            {listings.filter(listing => {
+              const listingBedrooms = String(listing.bedrooms);
+              const itemBedrooms = String(item.bedrooms);
+              return listingBedrooms === itemBedrooms;
+            }).map((listing, listingIndex) => (
+              <div key={listingIndex} className="listing-item" onClick={() => handleListingClick(listing)}>
+              <div className="listing-content">
+                {listing.address.split(',')[0]}
+                <span className="listing-price"> ${listing.price.toLocaleString('en-US')}</span>
+              </div>
+              <span className="listing-icon">+</span> {/* Replace '>' with your desired icon */}
+            </div>
             ))}
+          </div>
+        </li>
+      ))}
           </ul>
         </div>
       )}
@@ -239,7 +248,8 @@ function App() {
           onCoordinateChange={handleCoordinateChange}
         /> 
         {/* Tip text below the MapComponent */}
-      
+      {/* Modal Component */}
+    <ListingModal listing={selectedListing} onClose={handleCloseModal} />
         </div>
   );  
 }

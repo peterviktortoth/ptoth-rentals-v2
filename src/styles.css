@@ -65,6 +65,19 @@ border: 1px solid #fff;
 
 }
 
+.result-item.expanded {
+  background-color: #54a2ef;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px #aeccf8b8;
+  font-size: 14px;
+  justify-content: center;
+  text-align: center;
+  color: rgb(5, 0, 0);
+  border: 1px solid #fff; /* Different background color for expanded items */
+}
+
 .result-item:hover {
 background-color: #54a2ef;
 color: #000000;
@@ -79,7 +92,7 @@ opacity: 0;
 }
 
 .toggle + label::before {
-content: "+"; /* Right-pointing triangle */
+content: "+";
 display: inline-block;
 margin-right: 10px; /* Space between the caret and the label text */
 margin-left: 5px;
@@ -88,7 +101,7 @@ color: rgba(0, 0, 0, 0.611);
 }
 
 .toggle:checked + label::before {
-content: "-"; /* Down-pointing triangle */
+content: "-";
 transform: rotate(180deg); /* Adjust rotation if needed */
 transition: transform 0.4s ease-in-out;
 text-justify:auto;
@@ -102,6 +115,7 @@ transition: max-height 0.5s;
 
 .toggle:checked ~ .listing-container {
 max-height: 1000px; /* Adjust as needed */
+background-color: #54a2ef;
 }
 
 
@@ -116,6 +130,7 @@ cursor: pointer;
 display: flex;
 text-justify: auto;
 justify-items: center;
+padding: 5px;
 }
 
 .category-title .listing-price {
@@ -127,15 +142,38 @@ margin-bottom: 5px;
 
 
 .listing-item {
-background-color: #40404000; /* Adjusted */
-padding: 0.5em;
-margin: 0em 0;
-border-left: 0px solid #fff; /* Distinguishing style */
-text-align: left ;
+  display: flex;
+  background-color: #d0e2f4;
+  justify-content: space-between; /* This pushes the icon to the far right */
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
+.listing-content {
+  margin-left: 15px;
+  
+}
+
+.listing-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: rgb(247, 247, 247);
+}
+
+.listing-icon {
+  content: '+'; /* This is the caret icon */
+  font-size: 16px; /* Adjust the size of the icon */
+  color: #333; /* Color of the icon */
+  margin-left: 10px; /* Space between the text and the icon */
+}
+
+
+
 .listing-price {
-color: #f6e249; /* Example: green color */
+color: #0aae0f; /* Example: green color */
 font-weight: bolder;
 font-style: italic;
 font-size: 15px;
@@ -144,7 +182,7 @@ margin-left: 0.5em;
 
 .listing-item-link {
 text-decoration: underline;
-color: rgb(255, 255, 255); /* or any specific color you prefer */
+color: rgb(3, 0, 0); /* or any specific color you prefer */
 align-items: left;
 }
 
@@ -420,6 +458,62 @@ background-color: #03a9f4;
 .layer {
 background-color: #00000028;
 transition: 0.3s ease all;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal {
+  background-color: white;
+  position: relative;
+  padding: 20px;
+  border-radius: 5px;
+  /* Add more styling as needed */
+}
+
+/* If you want different colors for specific elements */
+.modal h2 {
+  color: #000000; /* Color for modal title */
+  font-size: 16px;
+}
+
+.modal li {
+  color: #555555; /* Color for list items */
+  margin-left: 15px;
+}
+
+.modal a {
+  color: rgb(9, 9, 230); /* Color for links */
+}
+
+.modal img {
+  max-width: 100%;  /* Ensures the image is not wider than the modal */
+  max-height: 300px; /* Adjust this value as needed */
+  display: block; /* To remove any extra space below the image */
+  margin: 0 auto; /* Centers the image in the modal */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 16px; /* Adjust size as needed */
+  color: #333; /* Adjust color as needed */
+  z-index: 10000;
+  margin-right: 10px;
 }
 
 
