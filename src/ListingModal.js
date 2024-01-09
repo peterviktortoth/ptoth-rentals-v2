@@ -1,22 +1,65 @@
+import React, { useEffect, useRef } from 'react';
+import ReactGA4 from 'react-ga4';
+
 function ListingModal({ listing, onClose }) {
+  const modalRef = useRef(null);
+
+  // Effect for Google Analytics event tracking
+  useEffect(() => {
+    if (listing) {
+      ReactGA4.event({
+        category: 'Listing Modal',
+        action: 'Open',
+        label: listing.address
+      });
+    }
+  }, [listing]);
+
+  // Effect for handling click outside of modal
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        onClose();
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
   if (!listing) return null;
 
   return (
     <div className="modal-backdrop">
-      <div className="modal">
-      <h2>{listing.address.split(',')[0]}</h2>
-        <div className="modal-close" onClick={onClose}>Close</div>
+      <div className="modal" ref={modalRef}>
+        <h2>{listing.address.split(',')[0]}</h2>
         {listing.imgSrc && <img src={listing.imgSrc} alt={`Image for ${listing.address}`} />}
         <ul>
           <li><strong>Number of Bedrooms:</strong> {listing.bedrooms}</li>
           <li><strong>Price:</strong> ${listing.price.toLocaleString('en-US')}</li>
-          <li>
-            <a href={`https://www.zillow.com${listing.detailUrl}`} target="_blank" rel="noopener noreferrer">View Listing</a>
-          </li>
+          <div>
+            <button
+              className="view-listing-button"
+              onClick={() => {
+                window.open(`https://www.zillow.com${listing.detailUrl}`, '_blank');
+                ReactGA4.event({
+                  category: 'Listing Modal',
+                  action: 'View Listing Click',
+                  label: listing.address
+                });
+              }}
+            >
+              View Listing
+            </button>
+          </div>
         </ul>
       </div>
     </div>
-  );
+  );  
 }
 
 export default ListingModal;
