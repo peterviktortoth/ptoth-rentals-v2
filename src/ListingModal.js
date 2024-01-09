@@ -42,10 +42,22 @@ function ListingModal({ listing, onClose }) {
           <li><strong>Number of Bedrooms:</strong> {listing.bedrooms}</li>
           <li><strong>Price:</strong> ${listing.price.toLocaleString('en-US')}</li>
           <div>
-            <button
+          <button
               className="view-listing-button"
-              onClick={() => {
-                window.open(`https://www.zillow.com${listing.detailUrl}`, '_blank');
+              onClick={(e) => {
+                e.preventDefault();
+
+                // Create a link element
+                const link = document.createElement('a');
+                link.href = `https://www.zillow.com${listing.detailUrl}`;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+
+                // Simulate a click on the link
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
                 ReactGA4.event({
                   category: 'Listing Modal',
                   action: 'View Listing Click',
@@ -55,6 +67,7 @@ function ListingModal({ listing, onClose }) {
             >
               View Listing
             </button>
+
           </div>
         </ul>
       </div>
