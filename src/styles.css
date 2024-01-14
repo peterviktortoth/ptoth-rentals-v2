@@ -290,10 +290,11 @@ input[type="number"], button {
 /* Main Container */
 .container {
   max-width: flex;
-  margin: 5px auto; /* Center and add space around the main container */
   padding: 20px;
   background-color: #d0e2f4;
   border-radius: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 /* Title */

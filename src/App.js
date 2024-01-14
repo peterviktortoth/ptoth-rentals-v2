@@ -3,6 +3,8 @@ import './styles.css';
 import MapComponent from './mapComponent';
 import ReactGA4 from 'react-ga4';
 import ListingModal from './ListingModal';
+import ResultItem from './resultItem';
+
 
 
 
@@ -199,59 +201,38 @@ function App() {
       </div>
   
       {loading ? (
-        <div className="spinner-wrapper">
-          <div className="loading-spinner"></div>
-        </div>
-      ) : (
-        <div>
-          {error && <div className="error-message">{error}</div>}
-          <ul className="results-list">
+      <div className="spinner-wrapper">
+        <div className="loading-spinner"></div>
+      </div>
+    ) : (
+      <div>
+        {error && <div className="error-message">{error}</div>}
+        <ul className="results-list">
           {averagePrices.map((item, index) => (
-      <li key={index} 
-      className={`result-item ${expandedSections.includes(index) ? 'expanded' : ''}`}
-      >
-    <input 
-      type="checkbox"
-      className="toggle"
-      id={`toggle-${index}`}
-      checked={expandedSections.includes(index)}
-      onChange={() => handleToggle(index)}
-    />
-    <label htmlFor={`toggle-${index}`} className="category-title">
-    Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`}  <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
-    </label>
-          <div className={`listing-container ${expandedSections.includes(index) ? 'expanded' : ''}`}>
-            {listings.filter(listing => {
-              const listingBedrooms = String(listing.bedrooms);
-              const itemBedrooms = String(item.bedrooms);
-              return listingBedrooms === itemBedrooms;
-            }).map((listing, listingIndex) => (
-              <div key={listingIndex} className="listing-item" onClick={() => handleListingClick(listing)}>
-              <div className="listing-content">
-                {listing.address.split(',')[0]}
-                <span className="listing-price"> ${listing.price.toLocaleString('en-US')}</span>
-              </div>
-              <span className="listing-icon">+</span> {/* Replace '>' with your desired icon */}
-            </div>
-            ))}
-          </div>
-        </li>
-      ))}
-          </ul>
-        </div>
-      )}
-      <p className="map-tip">Change the search location by dragging the marker on the map</p>
+            <ResultItem
+              key={index}
+              item={item}
+              index={index}
+              expandedSections={expandedSections}
+              handleToggle={handleToggle}
+              listings={listings}
+              handleListingClick={handleListingClick}
+            />
+          ))}
+        </ul>
+      </div>
+    )}
+
+    <p className="map-tip">Change the search location by dragging the marker on the map</p>
     <MapComponent 
-          coordinates={userCoordinates} 
-          radius={parseFloat(radius)} 
-          listings={displayedListings} 
-          onCoordinateChange={handleCoordinateChange}
-        /> 
-        {/* Tip text below the MapComponent */}
-      {/* Modal Component */}
+      coordinates={userCoordinates} 
+      radius={parseFloat(radius)} 
+      listings={displayedListings} 
+      onCoordinateChange={handleCoordinateChange}
+    />
     <ListingModal listing={selectedListing} onClose={handleCloseModal} />
-        </div>
-  );  
+  </div>
+);
 }
 
 export default App;
