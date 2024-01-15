@@ -78,6 +78,11 @@ border: 1px solid #fff;
   border: 1px solid #fff; /* Different background color for expanded items */
 }
 
+.pagination-indicators  {
+  margin-top: 20px;
+
+}
+
 .result-item:hover {
 background-color: #54a2ef;
 color: #000000;
@@ -98,14 +103,16 @@ margin-right: 10px; /* Space between the caret and the label text */
 margin-left: 5px;
 transition: transform 0.4s ease-in-out;
 color: rgba(0, 0, 0, 0.611);
+margin-right: auto;
 }
 
 .toggle:checked + label::before {
-content: "-";
-transform: rotate(180deg); /* Adjust rotation if needed */
-transition: transform 0.4s ease-in-out;
-text-justify:auto;
+  content: "-";
+  transform: rotate(180deg); /* Adjust rotation if needed */
+  transition: transform 0.4s ease-in-out;
+  text-justify: auto;
 }
+
 
 .toggle ~ .listing-container {
 max-height: 0;
@@ -131,6 +138,20 @@ display: flex;
 text-justify: auto;
 justify-items: center;
 padding: 5px;
+margin-bottom: 0px;
+justify-content: center;
+align-items: center;
+}
+
+.category-title::before {
+  content: "+";
+  display: inline-block;
+  margin-right: 10px; /* Space between the caret and the label text */
+  margin-left: 5px;
+  transition: transform 0.4s ease-in-out;
+  color: rgba(0, 0, 0, 0.611);
+  margin-right: auto;
+  order: -1; /* Ensures the icon always stays on the left */
 }
 
 .category-title .listing-price {
@@ -138,6 +159,10 @@ color: #000000; /* Change to your desired color */
 margin-left: 0.5em;
 text-align: right;
 margin-bottom: 5px;
+}
+
+.title-text{
+  margin-right: auto;
 }
 
 

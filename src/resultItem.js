@@ -16,6 +16,9 @@ function ResultItem({ item, index, expandedSections, handleToggle, listings, han
 
   const paginatedListings = listings.slice(currentPage * resultsPerPage, (currentPage + 1) * resultsPerPage);
 
+  const { bedrooms, average_price, numberOfResults } = item;
+
+
   return (
     <li {...handlers} className={`result-item ${isExpanded ? 'expanded' : ''}`} key={index}>
       <input 
@@ -26,8 +29,15 @@ function ResultItem({ item, index, expandedSections, handleToggle, listings, han
         onChange={() => handleToggle(index)}
       />
       <label htmlFor={`toggle-${index}`} className="category-title">
-        Average {item.bedrooms === 'Unknown' ? 'Studio' : `${item.bedrooms} bedroom`} <span className="listing-price">${item.average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
-      </label>
+  <span className="title-text">
+    {bedrooms === 'Unknown' ? 'Studio' : `${bedrooms} bedroom`}
+    <br />
+    Average price: ${average_price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+    <br />
+    Number of results: {numberOfResults}
+  </span>
+</label>
+
       <div className={`listing-container ${isExpanded ? 'expanded' : ''}`}>
         {paginatedListings.map((listing, listingIndex) => (
           <div key={listingIndex} className="listing-item" onClick={() => handleListingClick(listing)}>
