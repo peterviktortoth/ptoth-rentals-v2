@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 
-function ResultItem({ item, index, expandedSections, handleToggle, listings, handleListingClick }) {
+function ResultItem({ item, expandedSections, handleToggle, listings, handleListingClick }) {
   const resultsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = Math.ceil(listings.length / resultsPerPage);
-  const isExpanded = expandedSections.includes(index);
+  // Adjusted to check for expansion based on bedrooms, not index
+  const isExpanded = expandedSections;
 
   const handlers = useSwipeable({
     onSwipedLeft: () => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1)),
@@ -18,25 +19,24 @@ function ResultItem({ item, index, expandedSections, handleToggle, listings, han
 
   const { bedrooms, average_price, numberOfResults } = item;
 
-
   return (
-    <li {...handlers} className={`result-item ${isExpanded ? 'expanded' : ''}`} key={index}>
+    <li {...handlers} className={`result-item ${isExpanded ? 'expanded' : ''}`}>
       <input 
         type="checkbox"
         className="toggle"
-        id={`toggle-${index}`}
+        id={`toggle-${bedrooms}`} // Use bedrooms as part of the ID for uniqueness
         checked={isExpanded}
-        onChange={() => handleToggle(index)}
+        onChange={() => handleToggle(bedrooms)} // Pass bedrooms to toggle function
       />
-      <label htmlFor={`toggle-${index}`} className="category-title">
-  <span className="title-text">
-    {bedrooms === 'Unknown' ? 'Studio' : `${bedrooms} bedroom`}
-    <br />
-    Average price: ${average_price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-    <br />
-    Number of results: {numberOfResults}
-  </span>
-</label>
+      <label htmlFor={`toggle-${bedrooms}`} className="category-title"> {/* Adjusted for bedrooms */}
+        <span className="title-text">
+        {bedrooms === 'Unknown' ? 'Studio' : `${bedrooms} bedroom`}
+        <br />
+        Average price -  <span className="price-text">${average_price.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+        <br />
+        </span>
+
+      </label>
 
       <div className={`listing-container ${isExpanded ? 'expanded' : ''}`}>
         {paginatedListings.map((listing, listingIndex) => (
@@ -49,7 +49,6 @@ function ResultItem({ item, index, expandedSections, handleToggle, listings, han
           </div>
         ))}
       </div>
-      {/* Conditionally render page counter */}
       {isExpanded && (
         <div className="pagination-indicators">
           <span>{`Page ${currentPage + 1} of ${totalPages}`}</span>

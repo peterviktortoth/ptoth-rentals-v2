@@ -5,33 +5,18 @@ import ReactGA4 from 'react-ga4';
 import ListingModal from './ListingModal';
 import ResultItem from './resultItem';
 
-
-
-
-
 const API_ENDPOINT = 'https://hps0363ra2.execute-api.us-east-2.amazonaws.com/dev/rentalInfo';
 
 function App() {
-  const [radius, setRadius] = useState(0.1); // Initial radius value
-  const [averagePrices, setAveragePrices] = useState([]); // State for average prices
-  const [listings, setListings] = useState([]); // State for individual listings
+  const [radius, setRadius] = useState(0.1);
+  const [averagePrices, setAveragePrices] = useState([]);
+  const [listings, setListings] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState({ latitude: null, longitude: null });
   const [expandedSections, setExpandedSections] = useState([]);
-  const [statusType, setStatusType] = useState('ForRent'); // New state for status type
-  const [displayedListings, setDisplayedListings] = useState([]);
+  const [statusType, setStatusType] = useState('ForRent');
   const [selectedListing, setSelectedListing] = useState(null);
-
-
-  const handleListingClick = (listing) => {
-    setSelectedListing(listing);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedListing(null);
-  };
-
 
   useEffect(() => {
     ReactGA4.initialize('G-72LH4NNPY2');
@@ -39,15 +24,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const getCurrentPosition = () => {
-      return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
-    };
-
     const fetchCoordinates = async () => {
       try {
-        const position = await getCurrentPosition();
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
         setUserCoordinates({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -61,134 +42,44 @@ function App() {
     fetchCoordinates();
   }, []);
 
-  const handleCoordinateChange = (newLatitude, newLongitude) => {
-    setUserCoordinates({ latitude: newLatitude, longitude: newLongitude });
-    // Optionally, you can also trigger fetching new rental listings here
-  };
-  
-
   const calculateRentalPrices = async () => {
-    console.log("calculateRentalPrices called");
-
-    if (isNaN(radius) || radius <= 0) {
-      setError('Please enter a valid positive number for the radius.');
-      setAveragePrices([]);
-      setListings([]);
-      return;
-    } else {
-      setError('');
-    }
-
     setLoading(true);
-
     try {
-      const response = await fetch(`${API_ENDPOINT}?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}&statusType=${statusType}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
+      const response = await fetch(`${API_ENDPOINT}?latitude=${userCoordinates.latitude}&longitude=${userCoordinates.longitude}&radius=${radius}&statusType=${statusType}`);
+      if (!response.ok) throw new Error('Failed to fetch data');
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || `Failed to fetch rental prices: ${response.statusText}`);
-      }
-
       setAveragePrices(data.averagePrices);
       setListings(data.listings);
-      setError(''); // Reset error if the request was successful
+      setError('');
     } catch (error) {
       console.error(`Error: ${error}`);
-      setError(error.message);
+      setError('Failed to fetch rental prices');
     } finally {
       setLoading(false);
     }
-};
-
-  const toggleSection = (bedrooms) => {
-    setExpandedSections(prevState => {
-      const newState = {
-        ...prevState,
-        [bedrooms]: !prevState[bedrooms]
-      };
-
-      console.log("Expanded sections updated to:", newState);
-      return newState;
-    });
   };
 
-  const handleIncrement = () => {
-    setRadius(prevRadius => {
-      const newRadius = Math.min(prevRadius + 0.1, 5);
-      console.log("Radius incremented to:", newRadius);
-      return newRadius;
-    });
-  };
-
-  const handleDecrement = () => {
-    setRadius(prevRadius => {
-      const newRadius = Math.max(prevRadius - 0.1, 0.1);
-      console.log("Radius decremented to:", newRadius);
-      return newRadius;
-    });
-  };
-
-  const [expandedSection, setExpandedSection] = useState(null);
-
-  const handleToggle = (index) => {
-    setExpandedSections(prevExpandedSections => {
-      const isSectionExpanded = prevExpandedSections.includes(index);
-
-      // Toggle the section's expanded state
-      const newExpandedSections = isSectionExpanded
-        ? prevExpandedSections.filter(sectionIndex => sectionIndex !== index)
-        : [...prevExpandedSections, index];
-
-      // Update displayed listings based on the new expanded sections
-      const newDisplayedListings = listings.filter(listing => {
-        const listingBedrooms = String(listing.bedrooms);
-        return newExpandedSections.some(expandedIndex => {
-          const itemBedrooms = String(averagePrices[expandedIndex].bedrooms);
-          return listingBedrooms === itemBedrooms;
-        });
-      });
-
-      setDisplayedListings(newDisplayedListings);
-      return newExpandedSections;
-    });
-  };
-
-  const handleExternalLinkClick = (url) => {
-    // Google Analytics event tracking for link clicks
-    ReactGA4.event({
-      category: 'External Link',
-      action: 'Click',
-      label: url
-    });
+  const handleToggle = (bedrooms) => {
+    setExpandedSections(prev => (prev.includes(bedrooms) ? prev.filter(b => b !== bedrooms) : [...prev, bedrooms]));
   };
 
   return (
     <div className="container">
       <h1 className="title">Can I Afford to Live Here?</h1>
-      <p className="instructions">Enter a search radius to see nearby properties</p>
       <div className="wrapper">
         <div className="number-stepper-container">
-          <button id="decrement" onClick={handleDecrement}>-</button>
+          <button id="decrement" onClick={() => setRadius(Math.max(radius - 0.1, 0.1))}>-</button>
           <div className="input-with-suffix">
             <input type="number" value={radius.toFixed(1)} readOnly />
             <span className="suffix">miles</span>
           </div>
-          <button id="increment" onClick={handleIncrement}>+</button>
+          <button id="increment" onClick={() => setRadius(Math.min(radius + 0.1, 5))}>+</button>
         </div>
         <div className="toggle-button-container">
           <span className="toggle-label">Rent</span>
           <div className="toggle-button-cover">
             <div className="button r" id="button-1">
-              <input type="checkbox" 
-                    className="checkbox" 
-                    checked={statusType === 'ForSale'} 
-                    onChange={() => setStatusType(statusType === 'ForRent' ? 'ForSale' : 'ForRent')} />
+              <input type="checkbox" className="checkbox" checked={statusType === 'ForSale'} onChange={() => setStatusType(statusType === 'ForRent' ? 'ForSale' : 'ForRent')} />
               <div className="knobs"></div>
               <div className="layer"></div>
             </div>
@@ -201,38 +92,39 @@ function App() {
       </div>
   
       {loading ? (
-      <div className="spinner-wrapper">
         <div className="loading-spinner"></div>
-      </div>
-    ) : (
-      <div>
-        {error && <div className="error-message">{error}</div>}
-        <ul className="results-list">
-          {averagePrices.map((item, index) => (
-            <ResultItem
-              key={index}
-              item={item}
-              index={index}
-              expandedSections={expandedSections}
-              handleToggle={handleToggle}
-              listings={listings}
-              handleListingClick={handleListingClick}
-            />
-          ))}
-        </ul>
-      </div>
-    )}
-
-    <p className="map-tip">Change the search location by dragging the marker on the map</p>
-    <MapComponent 
-      coordinates={userCoordinates} 
-      radius={parseFloat(radius)} 
-      listings={displayedListings} 
-      onCoordinateChange={handleCoordinateChange}
-    />
-    <ListingModal listing={selectedListing} onClose={handleCloseModal} />
-  </div>
-);
-}
+      ) : error ? (
+        <div className="error-message">{error}</div>
+      ) : (
+        <div>
+          <ul className="results-list">
+            {averagePrices.map((item) => {
+              const relatedListings = listings.filter(listing => String(listing.bedrooms) === String(item.bedrooms) && expandedSections.includes(item.bedrooms));
+              return (
+                <ResultItem
+                  key={item.bedrooms}
+                  item={item}
+                  expandedSections={expandedSections.includes(item.bedrooms)}
+                  handleToggle={() => handleToggle(item.bedrooms)}
+                  listings={relatedListings}
+                  handleListingClick={setSelectedListing}
+                />
+              );
+            })}
+          </ul>
+          <MapComponent 
+            coordinates={userCoordinates} 
+            radius={parseFloat(radius)} 
+            listings={listings} // Adjust according to how you want to use displayedListings or listings
+            onCoordinateChange={(lat, lng) => setUserCoordinates({ latitude: lat, longitude: lng })}
+          />
+          {selectedListing && (
+            <ListingModal listing={selectedListing} onClose={() => setSelectedListing(null)} />
+          )}
+        </div>
+      )}
+    </div>
+  );
+          }  
 
 export default App;
